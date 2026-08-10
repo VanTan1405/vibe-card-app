@@ -1,13 +1,13 @@
 /* ==========================================================================
    VIBE CARD AI - ENGINE & INTERACTIVITY (GEN Z 2026)
-   TÍCH HỢP BỐC QUẺ VIBE & THẦN SỐ HỌC CÔNG DANH SỰ NGHIỆP
+   TÍCH HỢP GIỚI HẠN 3 LƯỢT XEM & NÂNG VIP ADMIN TANNV DUYỆT
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   // --- STATE & CONFIG ---
   const state = {
-    activeMode: 'vibe', // 'vibe' or 'career'
+    activeMode: 'vibe',
     userName: '',
     userZodiac: '',
     userBirthdate: '',
@@ -19,6 +19,52 @@ document.addEventListener('DOMContentLoaded', () => {
     themes: ['theme-dark', 'theme-cyber', 'theme-pastel'],
     isVipUnlocked: false
   };
+
+  // --- USER QUOTA & VIP MANAGEMENT ---
+  function getUserState() {
+    let usageCount = parseInt(localStorage.getItem('vibe_user_usage_count') || '0');
+    let userStatus = localStorage.getItem('vibe_user_status') || 'free';
+    let userId = localStorage.getItem('vibe_user_id');
+    
+    if (!userId) {
+      userId = 'USER' + Math.floor(1000 + Math.random() * 9000);
+      localStorage.setItem('vibe_user_id', userId);
+    }
+
+    return { usageCount, userStatus, userId };
+  }
+
+  function updateUsageBadge() {
+    const userState = getUserState();
+    const badge = document.getElementById('usageCountBadge');
+    if (!badge) return;
+    
+    if (userState.userStatus === 'vip') {
+      badge.innerHTML = '<i class="fa-solid fa-crown" style="color: #f59e0b;"></i> VIP: Không Giới Hạn';
+      badge.style.background = 'rgba(245, 158, 11, 0.2)';
+      badge.style.color = '#fbbf24';
+      badge.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+    } else {
+      const remaining = Math.max(0, 3 - userState.usageCount);
+      badge.innerHTML = `<i class="fa-solid fa-eye"></i> Lượt xem: ${remaining}/3`;
+      if (remaining === 0) {
+        badge.style.background = 'rgba(239, 68, 68, 0.2)';
+        badge.style.color = '#f87171';
+        badge.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+      } else {
+        badge.style.background = 'rgba(236, 72, 153, 0.2)';
+        badge.style.color = '#f472b6';
+        badge.style.borderColor = 'rgba(236, 72, 153, 0.4)';
+      }
+    }
+  }
+
+  function openLimitModal() {
+    const userState = getUserState();
+    const limitModal = document.getElementById('limitModal');
+    document.getElementById('limitTransferCode').innerText = `VIBE VIP ${userState.userId}`;
+    limitModal.classList.remove('hidden');
+  }
 
   // --- SOUND SYNTHESIZER (WEB AUDIO API) ---
   const AudioEngine = {
@@ -99,11 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return x - Math.floor(x);
   }
 
-  // Calculate Life Path Number (Thần Số Học) from YYYY-MM-DD
   function calculateLifePathNumber(birthdateStr) {
     const digits = birthdateStr.replace(/-/g, '').split('').map(Number);
     let sum = digits.reduce((a, b) => a + b, 0);
-    
     while (sum > 9 && sum !== 11 && sum !== 22) {
       sum = String(sum).split('').map(Number).reduce((a, b) => a + b, 0);
     }
@@ -247,7 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { title: 'Đèn Cầy Thơm Ambient Relax', price: '150.000đ', img: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=300&q=80', desc: 'Giải tỏa năng lượng suy tư buổi tối' }
   ];
 
-  // --- GENERATE FORTUNE DATA ---
   function computeFortune(name, zodiacKey, moods) {
     const dateStr = getTodayString();
     const rawSeed = hashString(`${name.toLowerCase().trim()}_${zodiacKey}_${dateStr}`);
@@ -320,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const W = 1080;
     const H = 1920;
 
-    // Background Gradient
     const bgGrad = ctx.createLinearGradient(0, 0, W, H);
     if (data.mode === 'career') {
       bgGrad.addColorStop(0, '#160a28');
@@ -334,7 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
-    // Glowing Neon Orbs
     const orbColor = data.mode === 'career' ? 'rgba(245, 158, 11, 0.35)' : 'rgba(236, 72, 153, 0.35)';
     const orb1 = ctx.createRadialGradient(200, 300, 20, 200, 300, 450);
     orb1.addColorStop(0, orbColor);
@@ -348,7 +389,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillStyle = orb2;
     ctx.fillRect(0, 0, W, H);
 
-    // Frame Border
     ctx.strokeStyle = data.mode === 'career' ? 'rgba(245, 158, 11, 0.5)' : 'rgba(236, 72, 153, 0.4)';
     ctx.lineWidth = 12;
     ctx.strokeRect(50, 50, W - 100, H - 100);
@@ -357,7 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.lineWidth = 4;
     ctx.strokeRect(70, 70, W - 140, H - 140);
 
-    // Top Header Badge
     ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.beginPath();
     ctx.roundRect(W / 2 - 270, 120, 540, 70, 35);
@@ -368,7 +407,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.textAlign = 'center';
     ctx.fillText(data.mode === 'career' ? '🚀 CAREER DESTINY CARD 2026' : '✨ VIBE CARD AI • 2026 ✨', W / 2, 166);
 
-    // Main Icon / Number Display
     if (data.mode === 'career') {
       ctx.font = '900 140px "Outfit", sans-serif';
       ctx.fillStyle = '#f59e0b';
@@ -385,12 +423,10 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.shadowBlur = 0;
     }
 
-    // User Name
     ctx.font = '800 64px "Outfit", sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.fillText(data.name.toUpperCase(), W / 2, 440);
 
-    // Subtitle Tag
     ctx.font = '600 34px "Plus Jakarta Sans", sans-serif';
     ctx.fillStyle = '#94a3b8';
     if (data.mode === 'career') {
@@ -406,7 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillText(moodsText, W / 2, 560);
     }
 
-    // Scores Section
     ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.beginPath();
     ctx.roundRect(120, 640, W - 240, 440, 24);
@@ -448,7 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
       startY += 75;
     });
 
-    // Advice / Horoscope Section
     ctx.fillStyle = data.mode === 'career' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(236, 72, 153, 0.1)';
     ctx.strokeStyle = data.mode === 'career' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(236, 72, 153, 0.3)';
     ctx.lineWidth = 2;
@@ -466,7 +500,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillStyle = '#f1f5f9';
     wrapText(ctx, `"${data.quote}"`, W / 2, 1260, W - 320, 48);
 
-    // Bottom Lucky Matrix Grid
     ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.beginPath();
     ctx.roundRect(120, 1500, W - 240, 200, 20);
@@ -497,7 +530,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillText(it.val, cx, 1630);
     });
 
-    // Footer Watermark
     ctx.font = '500 28px "Space Grotesk", sans-serif';
     ctx.fillStyle = '#64748b';
     ctx.fillText(`Xem Công Danh tại: goomood-team-chat.kiettng.chatgpt.site`, W / 2, 1780);
@@ -592,10 +624,19 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Đã đổi theme giao diện!');
   });
 
-  // Submit Handler
+  // Submit Handler (With 3-Free-Views Quota Check)
   startGachaBtn.addEventListener('click', () => {
-    const nameInput = document.getElementById('userName').value.trim();
+    const userState = getUserState();
 
+    // Check Quota Limit (Max 3 free views)
+    if (userState.userStatus !== 'vip' && userState.usageCount >= 3) {
+      AudioEngine.playClick();
+      openLimitModal();
+      showToast('⚠️ Bạn đã dùng hết 3 lượt xem miễn phí. Vui lòng chuyển khoản nâng VIP!');
+      return;
+    }
+
+    const nameInput = document.getElementById('userName').value.trim();
     if (!nameInput) {
       showToast('Vui lòng nhập tên của bạn nhé!');
       return;
@@ -621,6 +662,24 @@ document.addEventListener('DOMContentLoaded', () => {
       state.fortuneData = computeCareer(state.userName, state.userBirthdate);
     }
 
+    // Increment Usage Count if Free User
+    if (userState.userStatus !== 'vip') {
+      const newCount = userState.usageCount + 1;
+      localStorage.setItem('vibe_user_usage_count', newCount.toString());
+      updateUsageBadge();
+    }
+
+    // Save Log for Admin Panel
+    saveUserLogToAdmin({
+      id: userState.userId,
+      name: state.userName,
+      mode: state.activeMode,
+      info: state.activeMode === 'vibe' ? ZODIAC_DATA[state.userZodiac].name : `NS: ${state.userBirthdate}`,
+      result: state.activeMode === 'vibe' ? state.fortuneData.quote.substring(0, 20) + '...' : `Con Số Chủ Đạo ${state.fortuneData.lifePathNum}`,
+      isVip: userState.userStatus === 'vip',
+      date: new Date().toLocaleString('vi-VN')
+    });
+
     AudioEngine.playClick();
 
     // Hide input card & Show Gacha Stage
@@ -642,14 +701,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2800);
   });
 
+  // Save log entry to localStorage for Admin Panel
+  function saveUserLogToAdmin(newLog) {
+    let logs = JSON.parse(localStorage.getItem('vibe_user_logs') || '[]');
+    logs.unshift(newLog);
+    if (logs.length > 50) logs.pop();
+    localStorage.setItem('vibe_user_logs', JSON.stringify(logs));
+  }
+
   // Render Result & Back side
   function renderResultSection() {
     const data = state.fortuneData;
     
-    // Render Canvas Front Card
     renderCanvasCard(data);
 
-    // Render Back Side
     if (data.mode === 'career') {
       document.getElementById('backZodiacTag').innerText = `Thần Số Học: Con Số ${data.lifePathNum}`;
       document.getElementById('backTitle').innerText = data.careerInfo.title;
@@ -746,21 +811,20 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   }
 
-  // VIP Modal Logic
+  // Modals Event Handlers
   const vipModal = document.getElementById('vipModal');
+  const limitModal = document.getElementById('limitModal');
+
   document.getElementById('openVipBtn').addEventListener('click', openVipModal);
   document.getElementById('triggerVipModalBtn').addEventListener('click', openVipModal);
-  document.getElementById('closeVipModalBtn').addEventListener('click', closeVipModal);
+  document.getElementById('closeVipModalBtn').addEventListener('click', () => vipModal.classList.add('hidden'));
+  document.getElementById('closeLimitModalBtn').addEventListener('click', () => limitModal.classList.add('hidden'));
 
   function openVipModal() {
     AudioEngine.playClick();
-    const syntaxCode = 'VIBE VIP ' + (Math.floor(Math.random() * 8999) + 1000);
-    document.getElementById('transferSyntax').innerText = syntaxCode;
+    const userState = getUserState();
+    document.getElementById('transferSyntax').innerText = `VIBE VIP ${userState.userId}`;
     vipModal.classList.remove('hidden');
-  }
-
-  function closeVipModal() {
-    vipModal.classList.add('hidden');
   }
 
   document.getElementById('copyCodeBtn').addEventListener('click', () => {
@@ -769,21 +833,22 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Đã copy cú pháp chuyển khoản!');
   });
 
+  document.getElementById('copyLimitCodeBtn').addEventListener('click', () => {
+    const code = document.getElementById('limitTransferCode').innerText;
+    navigator.clipboard.writeText(code);
+    showToast('Đã copy cú pháp chuyển khoản MoMo!');
+  });
+
   document.getElementById('simulatePaidBtn').addEventListener('click', () => {
     AudioEngine.playGachaSound();
-    state.isVipUnlocked = true;
-    closeVipModal();
-    showToast('👑 Đã xác nhận thanh toán VIP! Mở khóa Quẻ Chuyên Sâu.');
-    
-    if (state.fortuneData) {
-      if (state.fortuneData.mode === 'career') {
-        state.fortuneData.quote = `[LUẬN GIẢI CÔNG DANH VIP 2026]: Người thuộc Con Số 主導 ${state.fortuneData.lifePathNum} sẽ có cơ hội thăng chức lớn vào cuối quý 3. Hãy tự tin đầu tư vào các ngách công nghệ/AI và mở rộng đội ngũ!`;
-      } else {
-        state.fortuneData.quote = `[QUẺ VIP EXCLUSIVE]: Vận trình 2026 của bạn sẽ tăng vọt mạnh mẽ vào tháng tới. Người thuộc mệnh ${state.fortuneData.zodiacInfo.element} đang thầm để ý bạn. Hãy đầu tư vào bản thân và nắm bắt cơ hội tài chính lớn!`;
-      }
-      document.getElementById('backHoroscopeText').innerText = state.fortuneData.quote;
-      renderCanvasCard(state.fortuneData);
-    }
+    vipModal.classList.add('hidden');
+    showToast('📬 Đã gửi thông báo cho Admin TANNV! Đang chờ duyệt VIP...');
+  });
+
+  document.getElementById('notifyAdminPaidBtn').addEventListener('click', () => {
+    AudioEngine.playGachaSound();
+    limitModal.classList.add('hidden');
+    showToast('📬 Đã gửi thông báo chuyển khoản MoMo cho Admin TANNV! Đang chờ xác nhận...');
   });
 
   function showToast(msg) {
@@ -814,6 +879,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   createStars();
+  updateUsageBadge();
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

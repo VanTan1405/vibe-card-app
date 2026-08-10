@@ -239,6 +239,19 @@ body {
   box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
 }
 
+.usage-badge {
+  background: rgba(236, 72, 153, 0.2);
+  color: #f472b6;
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 /* Hero Section */
 .hero-section {
   padding: 40px 0 25px;

@@ -149,7 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (target) {
       target.isVip = !target.isVip;
       saveUserLogs(logs);
-      showToast(`Đã thay đổi trạng thái VIP cho ${target.name}`);
+
+      // Also activate VIP status in local user storage
+      localStorage.setItem('vibe_user_status', target.isVip ? 'vip' : 'free');
+
+      showToast(`✅ ${target.isVip ? 'Đã duyệt VIP mở khóa lượt xem không giới hạn' : 'Đã hạ về gói miễn phí'} cho ${target.name} (${id})`);
       initDashboard();
     }
   };

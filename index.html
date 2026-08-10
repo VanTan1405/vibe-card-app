@@ -48,6 +48,7 @@
       </div>
 
       <div class="header-actions">
+        <span id="usageCountBadge" class="usage-badge"><i class="fa-solid fa-eye"></i> Lượt xem: 3/3</span>
         <button id="soundToggleBtn" class="icon-btn" title="Bật/Tắt âm thanh">
           <i class="fa-solid fa-volume-high"></i>
         </button>
@@ -315,10 +316,45 @@
 
       <div class="modal-footer text-center">
         <button id="simulatePaidBtn" class="btn-action primary">
-          <i class="fa-solid fa-circle-check"></i> Tôi Đã Chuyển Khoản (Xác Nhận Tự Động)
+          <i class="fa-solid fa-circle-check"></i> Tôi Đã Chuyển Khoản (Thông Báo Admin TANNV)
         </button>
-        <p class="note-text"><i class="fa-solid fa-shield-halved"></i> Hệ thống tự động xác nhận trong 3 giây sau khi thanh toán</p>
+        <p class="note-text"><i class="fa-solid fa-shield-halved"></i> Vui lòng giữ nội dung chuyển khoản để Admin xác nhận mở VIP</p>
       </div>
+    </div>
+  </div>
+
+  <!-- LIMIT EXCEEDED PAYWALL MODAL -->
+  <div id="limitModal" class="modal-overlay hidden">
+    <div class="modal-card glass-card text-center" style="border: 2px solid var(--primary-pink);">
+      <button class="modal-close" id="closeLimitModalBtn">&times;</button>
+      
+      <div class="vip-icon" style="color: var(--primary-pink);"><i class="fa-solid fa-lock"></i></div>
+      <h3 style="color: #f472b6;">ĐÃ HẾT 3 LƯỢT MIỄN PHÍ!</h3>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">
+        Bạn đã sử dụng hết 3 lượt bốc quẻ miễn phí. Để mở khóa lượt xem <strong>KHÔNG GIỚI HẠN</strong>, vui lòng chuyển khoản <strong>5.000đ qua MoMo</strong> và chờ Admin <strong>TANNV</strong> xác nhận!
+      </p>
+
+      <div class="qr-box mx-auto" style="margin-bottom: 15px;">
+        <img src="./qr-payment.jpg" alt="Mã QR MoMo Nguyễn Văn Tân" style="max-width: 240px; border-radius: 12px; border: 3px solid var(--primary-pink);">
+      </div>
+
+      <div class="qr-info" style="margin-bottom: 15px;">
+        <div class="info-row">
+          <span>Chủ TK:</span> <strong>NGUYỄN VĂN TÂN</strong>
+        </div>
+        <div class="info-row">
+          <span>Số tiền:</span> <strong style="color: var(--primary-amber);">5.000 VNĐ</strong>
+        </div>
+        <div class="info-row">
+          <span>Cú pháp CK:</span> <strong id="limitTransferCode" class="text-highlight">VIBE VIP USER88</strong>
+          <button class="btn-copy-code" id="copyLimitCodeBtn"><i class="fa-solid fa-copy"></i></button>
+        </div>
+      </div>
+
+      <button id="notifyAdminPaidBtn" class="btn-action primary width-100">
+        <i class="fa-solid fa-paper-plane"></i> ĐÃ CHUYỂN KHOẢN - BÁO ADMIN TANNV DUYỆT
+      </button>
+      <p class="note-text" style="margin-top: 10px;"><i class="fa-solid fa-clock"></i> Admin TANNV sẽ duyệt VIP và kích hoạt tài khoản của bạn trong 1 - 3 phút!</p>
     </div>
   </div>
 
