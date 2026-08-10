@@ -1,0 +1,21 @@
+{
+  "name": "Vibe Card AI 2026",
+  "short_name": "VibeCardAI",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0712",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/8636/8636046.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/8636/8636046.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

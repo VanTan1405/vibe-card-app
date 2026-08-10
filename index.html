@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIBE CARD AI - Bốc Quẻ Thần Thái & Card Năng Lượng Gen Z 2026</title>
+  <meta name="description" content="Khám phá quẻ mệnh hàng ngày, tính toán chỉ số năng lượng chuẩn xác và tạo Vibe Card 9:16 siêu chất đăng Instagram/TikTok Story!">
+  <meta property="og:title" content="VIBE CARD AI - Thần Thái & Quẻ Mệnh Gen Z">
+  <meta property="og:description" content="Xem quẻ năng lượng hôm nay, vận may tình duyên, màu sắc phong thủy & nhận ngay Card Story 9:16 độc bản!">
+  <meta property="og:type" content="website">
+
+  <!-- PWA App Manifest & Mobile Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#8b5cf6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VibeCardAI">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/8636/8636046.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-dark">
+  <!-- Dynamic Background Particles & Orbs -->
+  <div class="bg-gradient-orb orb-1"></div>
+  <div class="bg-gradient-orb orb-2"></div>
+  <div class="bg-gradient-orb orb-3"></div>
+  <div class="stars-container" id="starsContainer"></div>
+
+  <!-- Header Navigation -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">VIBE CARD <span class="badge-ai">AI 2026</span></span>
+          <span class="brand-tagline">Bốc Quẻ Năng Lượng & Thần Thái Gen Z</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="soundToggleBtn" class="icon-btn" title="Bật/Tắt âm thanh">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <button id="themeToggleBtn" class="icon-btn" title="Đổi giao diện">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <button id="openVipBtn" class="vip-badge-btn">
+          <i class="fa-solid fa-crown"></i> Quẻ VIP 5K
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="app-main">
+    <div class="container">
+      
+      <!-- Hero Banner -->
+      <section class="hero-section text-center">
+        <div class="trend-pill">
+          <i class="fa-solid fa-fire-flame-curved"></i> Trend Hot Gen Z 2026 • Chuẩn Xác 100% Theo Số Học & Hoàng Đạo
+        </div>
+        <h1 class="hero-title">BỐC QUẺ NĂNG LƯỢNG <br><span class="text-gradient">KHÁM PHÁ VIBE HÔM NAY</span></h1>
+        <p class="hero-desc">Nhập tên của bạn để mở Hộp Mù (Blind Box) nhận ngay thông điệp vũ trụ, chỉ số thần thái và Card Story 9:16 cực đẹp để chia sẻ lên Mạng Xã Hội!</p>
+      </section>
+
+      <!-- Input Form Card -->
+      <section class="input-card-wrapper">
+        <div class="glass-card input-card">
+          
+          <!-- Mode Switcher Tabs -->
+          <div class="mode-tabs">
+            <button type="button" class="tab-btn active" id="tabVibeMode">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> 🔮 Bốc Quẻ Vibe Hàng Ngày
+            </button>
+            <button type="button" class="tab-btn" id="tabCareerMode">
+              <i class="fa-solid fa-briefcase"></i> 🚀 Xem Công Danh & Sự Nghiệp
+            </button>
+          </div>
+
+          <form id="fortuneForm" onsubmit="return false;">
+            <div class="form-grid">
+              
+              <!-- Full Name -->
+              <div class="form-group">
+                <label for="userName"><i class="fa-solid fa-user-astronaut"></i> Tên hoặc Nickname của bạn:</label>
+                <input type="text" id="userName" placeholder="VD: Linh Cute, Minh Hieu, Alex..." required autocomplete="off">
+              </div>
+
+              <!-- Zodiac / Birthday -->
+              <div class="form-group" id="zodiacGroup">
+                <label for="userZodiac"><i class="fa-solid fa-sun"></i> Cung Hoàng Đạo của bạn:</label>
+                <select id="userZodiac" required>
+                  <option value="" disabled selected>-- Chọn Cung Hoàng Đạo --</option>
+                  <option value="Aries">♈ Bạch Dương (21/03 - 19/04)</option>
+                  <option value="Taurus">♉ Kim Ngưu (20/04 - 20/05)</option>
+                  <option value="Gemini">♊ Song Tử (21/05 - 21/06)</option>
+                  <option value="Cancer">♋ Cự Giải (22/06 - 22/07)</option>
+                  <option value="Leo">♌ Sư Tử (23/07 - 22/08)</option>
+                  <option value="Virgo">♍ Xử Nữ (23/08 - 22/09)</option>
+                  <option value="Libra">♎ Thiên Bình (23/09 - 22/10)</option>
+                  <option value="Scorpio">♏ Bọ Cạp (23/10 - 21/11)</option>
+                  <option value="Sagittarius">♐ Nhân Mã (22/11 - 21/12)</option>
+                  <option value="Capricorn">♑ Ma Kết (22/12 - 19/01)</option>
+                  <option value="Aquarius">♒ Bảo Bình (20/01 - 18/02)</option>
+                  <option value="Pisces">♓ Song Ngư (19/02 - 20/03)</option>
+                </select>
+              </div>
+
+              <!-- Full Birthdate (Hidden initially, shown in Career mode) -->
+              <div class="form-group hidden" id="birthdateGroup">
+                <label for="userBirthdate"><i class="fa-solid fa-calendar-days"></i> Ngày Tháng Năm Sinh của bạn:</label>
+                <input type="date" id="userBirthdate">
+              </div>
+
+            </div>
+
+            <!-- Mood Tags Selection -->
+            <div class="form-group full-width">
+              <label><i class="fa-solid fa-heart-pulse"></i> Chọn 3 từ khóa tâm trạng thực tế hôm nay của bạn:</label>
+              <div class="mood-chips" id="moodChips">
+                <button type="button" class="chip" data-mood="Thèm Trà Sữa">🧋 Thèm Trà Sữa</button>
+                <button type="button" class="chip" data-mood="Yêu Đời">✨ Yêu Đời</button>
+                <button type="button" class="chip" data-mood="Suy Cố Vô Cùng">🥹 Suy Cố Vô Cùng</button>
+                <button type="button" class="chip" data-mood="Muốn Săn Sale">🛍️ Muốn Săn Sale</button>
+                <button type="button" class="chip" data-mood="Bật Mode Chăm">🔥 Bật Mode Chăm</button>
+                <button type="button" class="chip" data-mood="Thích Đi Dạo">🎧 Thích Đi Dạo</button>
+                <button type="button" class="chip" data-mood="Muốn Độc Thân">💅 Muốn Độc Thân</button>
+                <button type="button" class="chip" data-mood="Cần An Ủi">🧸 Cần An Ủi</button>
+                <button type="button" class="chip" data-mood="Hướng Nội">🤫 Hướng Nội</button>
+                <button type="button" class="chip" data-mood="Chất Nổi Bật">⚡ Chất Nổi Bật</button>
+              </div>
+            </div>
+
+            <!-- Submit Gacha Button -->
+            <div class="text-center form-submit">
+              <button type="button" id="startGachaBtn" class="btn-gacha-primary">
+                <i class="fa-solid fa-box-open"></i> MỞ HỘP MÙ & BỐC QUẺ NGAY
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Gacha Unboxing Animation Stage (Hidden initially) -->
+      <section id="gachaStage" class="gacha-stage hidden">
+        <div class="gacha-box-wrapper">
+          <div class="gacha-box" id="gachaBox">
+            <div class="box-lid">🎁</div>
+            <div class="box-body">✨</div>
+            <div class="box-glow"></div>
+          </div>
+          <p class="gacha-status-text" id="gachaStatus">Đang quét tần số năng lượng vũ trụ...</p>
+        </div>
+      </section>
+
+      <!-- Result Section (Card Preview & Details) -->
+      <section id="resultSection" class="result-section hidden">
+        
+        <div class="result-header text-center">
+          <span class="badge-success"><i class="fa-solid fa-circle-check"></i> Đã Quét Xong Năng Lượng Hôm Nay</span>
+          <h2 class="section-title">CARD VIBE & QUẺ MỆNH CỦA BẠN</h2>
+          <p class="section-sub">Nhấn vào Card để lật xem phân tích chi tiết hoặc bấm Tải về để đăng Story ngay!</p>
+        </div>
+
+        <div class="result-grid">
+          
+          <!-- 3D Flip Card Container -->
+          <div class="card-3d-wrapper">
+            <div class="card-3d" id="card3d">
+              
+              <!-- FRONT SIDE (Canvas Preview) -->
+              <div class="card-side card-front">
+                <div class="canvas-container">
+                  <canvas id="vibeCanvas" width="1080" height="1920"></canvas>
+                  <div class="card-hint"><i class="fa-solid fa-rotate-left"></i> Nhấn để lật thẻ</div>
+                </div>
+              </div>
+
+              <!-- BACK SIDE (Text Breakdown) -->
+              <div class="card-side card-back glass-card">
+                <div class="back-content">
+                  <div class="back-header">
+                    <span class="back-zodiac-tag" id="backZodiacTag">♈ Bạch Dương</span>
+                    <h3 id="backTitle">Quẻ: Thần Thái Bùng Nổ</h3>
+                  </div>
+
+                  <div class="energy-breakdown">
+                    <h4><i class="fa-solid fa-chart-simple"></i> Chỉ Số Thần Thái Chi Tiết:</h4>
+                    <div id="backEnergyBars" class="energy-bars-list">
+                      <!-- Rendered by JS -->
+                    </div>
+                  </div>
+
+                  <div class="horoscope-detail">
+                    <h4><i class="fa-solid fa-scroll"></i> Phân Tích Mệnh Số Hôm Nay:</h4>
+                    <p id="backHoroscopeText">Đang tải...</p>
+                  </div>
+
+                  <div class="lucky-matrix-grid">
+                    <div class="matrix-item">
+                      <span class="m-label">Màu May Mắn</span>
+                      <span class="m-val" id="backLuckyColor">Hồng Neon</span>
+                    </div>
+                    <div class="matrix-item">
+                      <span class="m-label">Số May Mắn</span>
+                      <span class="m-val" id="backLuckyNumber">88</span>
+                    </div>
+                    <div class="matrix-item">
+                      <span class="m-label">Vận Tình Duyên</span>
+                      <span class="m-val" id="backLoveScore">95%</span>
+                    </div>
+                    <div class="matrix-item">
+                      <span class="m-label">Vận Tài Lộc</span>
+                      <span class="m-val" id="backWealthScore">80%</span>
+                    </div>
+                  </div>
+
+                  <button class="btn-flip-back" id="flipBackBtn">
+                    <i class="fa-solid fa-arrow-left"></i> Xem Mặt Trước Card
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Result Action Controls -->
+          <div class="result-actions-panel glass-card">
+            <h3><i class="fa-solid fa-sliders"></i> Tùy Chọn & Chia Sẻ</h3>
+            
+            <div class="action-buttons-group">
+              <button id="downloadCardBtn" class="btn-action primary">
+                <i class="fa-solid fa-download"></i> Tải Card Story 9:16 (PNG HD)
+              </button>
+
+              <button id="shareLinkBtn" class="btn-action secondary">
+                <i class="fa-solid fa-share-nodes"></i> Sao Chép Link Kết Quả
+              </button>
+
+              <button id="reGachaBtn" class="btn-action outline">
+                <i class="fa-solid fa-rotate"></i> Bốc Quẻ Cho Người Khác
+              </button>
+            </div>
+
+            <!-- VIP Deep Horoscope Promo Card -->
+            <div class="vip-promo-box">
+              <div class="vip-badge"><i class="fa-solid fa-crown"></i> Gói VIP 5.000đ</div>
+              <h4>Khai Mở Quẻ Tình Duyên & Sự Nghiệp Chi Tiết 2026</h4>
+              <p>Mở khóa luận giải chuyên sâu về người ấy, thời điểm phát tài và lời khuyên phong thủy cá nhân hóa!</p>
+              <button class="btn-vip-action" id="triggerVipModalBtn">
+                <i class="fa-solid fa-bolt"></i> Mở Khóa Quẻ VIP Ngay
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Lucky Items Affiliate Store Section -->
+      <section id="affiliateSection" class="affiliate-section">
+        <div class="section-title-wrap text-center">
+          <span class="badge-tag">Gợi Ý Phong Thủy Gen Z</span>
+          <h2 class="section-title">VẬT PHẨM TĂNG VIBE MAY MẮN HÔM NAY</h2>
+          <p class="section-sub">Được hệ thống chọn lọc riêng cho cung hoàng đạo & năng lượng hôm nay của bạn</p>
+        </div>
+
+        <div class="affiliate-grid" id="affiliateGrid">
+          <!-- Rendered dynamically via JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- VIP VietQR Modal -->
+  <div id="vipModal" class="modal-overlay hidden">
+    <div class="modal-card glass-card">
+      <button class="modal-close" id="closeVipModalBtn">&times;</button>
+      
+      <div class="modal-header text-center">
+        <div class="vip-icon"><i class="fa-solid fa-crown"></i></div>
+        <h3>NÂNG CẤP QUẺ VIP 5.000Đ</h3>
+        <p>Quét mã VietQR / MoMo bên dưới để unlock Luận Giải Chuyên Sâu</p>
+      </div>
+
+      <div class="qr-container text-center">
+        <div class="qr-box">
+          <img id="vietQrImg" src="./qr-payment.jpg" alt="Mã QR Thanh Toán MoMo / VietQR Nguyễn Văn Tân" style="max-width: 260px; height: auto; border-radius: 16px; border: 3px solid var(--primary-pink); box-shadow: var(--shadow-glow-pink);">
+        </div>
+        <div class="qr-info">
+          <div class="info-row">
+            <span>Chủ TK:</span> <strong>NGUYỄN VĂN TÂN</strong>
+          </div>
+          <div class="info-row">
+            <span>Số tiền:</span> <strong>5.000 VNĐ</strong>
+          </div>
+          <div class="info-row">
+            <span>Nội dung CK:</span> <strong id="transferSyntax" class="text-highlight">VIBE VIP 8899</strong>
+            <button class="btn-copy-code" id="copyCodeBtn"><i class="fa-solid fa-copy"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer text-center">
+        <button id="simulatePaidBtn" class="btn-action primary">
+          <i class="fa-solid fa-circle-check"></i> Tôi Đã Chuyển Khoản (Xác Nhận Tự Động)
+        </button>
+        <p class="note-text"><i class="fa-solid fa-shield-halved"></i> Hệ thống tự động xác nhận trong 3 giây sau khi thanh toán</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast hidden">
+    <i class="fa-solid fa-circle-info"></i> <span id="toastMsg">Thông báo</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container text-center">
+      <p>© 2026 VIBE CARD AI - Nền tảng Bốc Quẻ Năng Lượng & Card Gen Z Hàng Đầu.</p>
+      <p class="footer-links">
+        <a href="#">Điều khoản sử dụng</a> • <a href="#">Chính sách riêng tư</a> • <a href="#">Liên hệ tài trợ</a> • <a href="admin.html" style="color: var(--primary-amber); font-weight: 700;"><i class="fa-solid fa-user-shield"></i> Quản Trị Admin</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

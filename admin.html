@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIBE CARD AI - ADMIN DASHBOARD & QUẢN LÝ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="theme-dark admin-body">
+
+  <!-- Background Orbs -->
+  <div class="bg-gradient-orb orb-1"></div>
+  <div class="bg-gradient-orb orb-2"></div>
+
+  <!-- LOGIN MODAL / SCREEN (Displayed if not logged in) -->
+  <div id="loginScreen" class="login-wrapper">
+    <div class="glass-card login-card text-center">
+      <div class="brand-icon mx-auto margin-b">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <h2 class="login-title">HỆ THỐNG QUẢN TRỊ ADMIN</h2>
+      <p class="login-sub">Đăng nhập tài khoản quản trị Vibe Card AI</p>
+
+      <form id="adminLoginForm" onsubmit="return false;">
+        <div class="form-group text-left">
+          <label for="adminUser"><i class="fa-solid fa-user"></i> Tài khoản Admin:</label>
+          <input type="text" id="adminUser" placeholder="Nhập tài khoản admin..." required autocomplete="off" value="TANNV">
+        </div>
+        <div class="form-group text-left">
+          <label for="adminPass"><i class="fa-solid fa-lock"></i> Mật khẩu:</label>
+          <input type="password" id="adminPass" placeholder="Nhập mật khẩu..." required autocomplete="off">
+        </div>
+        <button type="submit" id="loginBtn" class="btn-action primary width-100">
+          <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP ADMIN
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN ADMIN DASHBOARD (Hidden initially) -->
+  <div id="adminDashboard" class="admin-dashboard hidden">
+    
+    <!-- Admin Top Navbar -->
+    <header class="admin-header">
+      <div class="admin-nav-container">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div>
+            <span class="brand-title">VIBE CARD AI <span class="badge-ai">ADMIN PANEL</span></span>
+            <span class="brand-tagline">Quản Lý Người Dùng & Thống Kê Báo Cáo</span>
+          </div>
+        </div>
+
+        <div class="admin-user-info">
+          <span class="admin-badge"><i class="fa-solid fa-user-check"></i> Admin: <strong id="currentAdminName">TANNV</strong></span>
+          <a href="index.html" class="icon-btn" title="Về trang chủ Web App"><i class="fa-solid fa-house"></i></a>
+          <button id="logoutBtn" class="icon-btn" title="Đăng xuất"><i class="fa-solid fa-power-off"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container admin-main">
+      
+      <!-- Stats Overview Cards -->
+      <section class="stats-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-icon purple"><i class="fa-solid fa-users"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Tổng Lượt Sử Dụng</span>
+            <h2 class="stat-value" id="statTotalUsers">1,248</h2>
+            <span class="stat-change positive"><i class="fa-solid fa-arrow-trend-up"></i> +18% hôm nay</span>
+          </div>
+        </div>
+
+        <div class="glass-card stat-card">
+          <div class="stat-icon pink"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Lượt Bốc Quẻ Vibe</span>
+            <h2 class="stat-value" id="statVibeCount">832</h2>
+            <span class="stat-change positive"><i class="fa-solid fa-arrow-trend-up"></i> 66.6% tổng số</span>
+          </div>
+        </div>
+
+        <div class="glass-card stat-card">
+          <div class="stat-icon amber"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Lượt Xem Công Danh</span>
+            <h2 class="stat-value" id="statCareerCount">416</h2>
+            <span class="stat-change positive"><i class="fa-solid fa-arrow-trend-up"></i> 33.4% tổng số</span>
+          </div>
+        </div>
+
+        <div class="glass-card stat-card">
+          <div class="stat-icon cyan"><i class="fa-solid fa-coins"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Doanh Thu VIP 5K</span>
+            <h2 class="stat-value" id="statTotalRevenue">1,850,000 VNĐ</h2>
+            <span class="stat-change positive"><i class="fa-solid fa-crown"></i> 370 lượt VIP</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts & Revenue Analytics Section -->
+      <section class="analytics-section margin-t">
+        <div class="glass-card chart-card">
+          <div class="chart-header">
+            <h3><i class="fa-solid fa-chart-area"></i> Báo Cáo Lượt Truy Cập & Doanh Thu 7 Ngày Gần Nhất</h3>
+            <div class="chart-filter">
+              <span class="pill-active">7 Ngày Qua</span>
+              <span>30 Ngày Qua</span>
+            </div>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="analyticsChart" width="800" height="280"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- User Management Table Section -->
+      <section class="user-table-section margin-t">
+        <div class="glass-card table-card">
+          <div class="table-header">
+            <div>
+              <h3><i class="fa-solid fa-list-check"></i> Danh Sách Lượt Sử Dụng Người Dùng</h3>
+              <p class="section-sub">Quản lý các lượt bốc quẻ, thông tin Thần số học và giao dịch VIP</p>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="table-controls">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="userSearchInput" placeholder="Tìm tên người dùng...">
+              </div>
+              <select id="filterModeSelect">
+                <option value="all">Tất cả Chế Độ</option>
+                <option value="vibe">Quẻ Vibe Hàng Ngày</option>
+                <option value="career">Công Danh Sự Nghiệp</option>
+              </select>
+              <select id="filterVipSelect">
+                <option value="all">Tất cả Trạng Thái</option>
+                <option value="vip">Đã Nâng VIP</option>
+                <option value="free">Miễn Phí</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên Người Dùng</th>
+                  <th>Chế Độ</th>
+                  <th>Thông Tin / Ngày Sinh</th>
+                  <th>Kết Quả / Số Chủ Đạo</th>
+                  <th>Gói VIP</th>
+                  <th>Thời Gian</th>
+                  <th>Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody">
+                <!-- Rendered dynamically by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="adminToast" class="toast hidden">
+    <i class="fa-solid fa-circle-info"></i> <span id="adminToastMsg">Thông báo</span>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
