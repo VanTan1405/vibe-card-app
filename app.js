@@ -980,6 +980,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Live Chat Widget Event Listeners
+  const chatWidgetBtn = document.getElementById('chatWidgetBtn');
+  const chatWidgetModal = document.getElementById('chatWidgetModal');
+  const closeChatWidgetBtn = document.getElementById('closeChatWidgetBtn');
+
+  if (chatWidgetBtn && chatWidgetModal) {
+    chatWidgetBtn.addEventListener('click', () => {
+      AudioEngine.playClick();
+      chatWidgetModal.classList.toggle('hidden');
+    });
+
+    closeChatWidgetBtn.addEventListener('click', () => {
+      chatWidgetModal.classList.add('hidden');
+    });
+  }
+
   createStars();
   updateUsageBadge();
 

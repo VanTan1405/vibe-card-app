@@ -426,6 +426,28 @@
     </div>
   </footer>
 
+  <!-- FLOATING LIVE CHAT WIDGET -->
+  <div id="chatWidgetBtn" class="chat-widget-btn" title="Chat Hỗ Trợ & Giao Lưu">
+    <i class="fa-solid fa-comments"></i>
+    <span class="chat-badge">Live</span>
+  </div>
+
+  <div id="chatWidgetModal" class="chat-widget-modal hidden">
+    <div class="chat-widget-header">
+      <div class="chat-header-title">
+        <i class="fa-solid fa-comments text-highlight"></i>
+        <span>VIBE TEAM CHAT 24/7</span>
+      </div>
+      <div class="chat-header-actions">
+        <a href="https://goomood-team-chat.kiettng.chatgpt.site/" target="_blank" class="chat-external-btn" title="Mở trang chat riêng"><i class="fa-solid fa-up-right-from-square"></i></a>
+        <button id="closeChatWidgetBtn" class="chat-close-btn">&times;</button>
+      </div>
+    </div>
+    <div class="chat-widget-body">
+      <iframe id="chatIframe" src="https://goomood-team-chat.kiettng.chatgpt.site/" title="Live Chat Window" allow="microphone; camera; autoplay"></iframe>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
