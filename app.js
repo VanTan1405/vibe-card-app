@@ -1202,6 +1202,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Zalo Chat Widget Event Listeners
+  const zaloChatBtn = document.getElementById('zaloChatBtn');
+  const zaloChatModal = document.getElementById('zaloChatModal');
+  const closeZaloChatModalBtn = document.getElementById('closeZaloChatModalBtn');
+
+  if (zaloChatBtn && zaloChatModal) {
+    zaloChatBtn.addEventListener('click', () => {
+      AudioEngine.playClick();
+      zaloChatModal.classList.toggle('hidden');
+    });
+
+    closeZaloChatModalBtn.addEventListener('click', () => {
+      zaloChatModal.classList.add('hidden');
+    });
+  }
+
   createStars();
   updateUsageBadge();
 
