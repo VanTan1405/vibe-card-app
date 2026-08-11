@@ -512,14 +512,22 @@
     <div class="chat-widget-header">
       <div class="chat-header-title">
         <i class="fa-solid fa-comments text-highlight"></i>
-        <span>VIBE TEAM CHAT 24/7</span>
+        <span>ĐỘNG BÀN TƠ — TEAM CHAT</span>
       </div>
       <div class="chat-header-actions">
-        <a href="https://goomood-team-chat.kiettng.chatgpt.site/" target="_blank" class="chat-external-btn" title="Mở trang chat riêng"><i class="fa-solid fa-up-right-from-square"></i></a>
+        <a href="https://goomood-team-chat.kiettng.chatgpt.site/" target="_blank" rel="noopener" class="chat-external-btn" title="Mở trang chat trong tab mới"><i class="fa-solid fa-up-right-from-square"></i></a>
         <button id="closeChatWidgetBtn" class="chat-close-btn">&times;</button>
       </div>
     </div>
-    <div class="chat-widget-body">
+    
+    <!-- Direct Access Action Bar -->
+    <div class="chat-direct-bar" style="background: rgba(0, 104, 255, 0.2); padding: 8px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <a href="https://goomood-team-chat.kiettng.chatgpt.site/" target="_blank" rel="noopener" class="btn-action primary width-100" style="padding: 6px 12px; font-size: 0.82rem; background: linear-gradient(135deg, #0068ff, #8b5cf6); text-decoration: none;">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> TRUY CẬP TRỰC TIẾP NHÓM CHAT (TAB MỚI)
+      </a>
+    </div>
+
+    <div class="chat-widget-body" style="position: relative;">
       <iframe id="chatIframe" src="https://goomood-team-chat.kiettng.chatgpt.site/" title="Live Chat Window" allow="microphone; camera; autoplay"></iframe>
     </div>
   </div>
