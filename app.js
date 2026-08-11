@@ -907,6 +907,25 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('🎉 Đã tải Card PNG nét cao về máy!');
   });
 
+  const shareToTeamChatBtn = document.getElementById('shareToTeamChatBtn');
+  if (shareToTeamChatBtn) {
+    shareToTeamChatBtn.addEventListener('click', () => {
+      AudioEngine.playClick();
+      const data = state.fortuneData;
+      const userName = state.userName || 'Bạn';
+      const quote = data ? data.quote : 'Vibe năng lượng bùng nổ!';
+      const shareMsg = `✨ [VIBE CARD AI 2026 OF ${userName.toUpperCase()}]:\n"${quote}"\n👉 Mời cả nhà xem quẻ tại Động Bàn Tơ: https://goomood-team-chat.kiettng.chatgpt.site/`;
+      
+      navigator.clipboard.writeText(shareMsg);
+      
+      const chatModal = document.getElementById('chatWidgetModal');
+      if (chatModal) {
+        chatModal.classList.remove('hidden');
+      }
+      showToast('💬 Đã copy thông điệp Card và mở Động Bàn Tơ Chat! Dán (Paste) vào khung chat để chia sẻ ngay!');
+    });
+  }
+
   document.getElementById('shareLinkBtn').addEventListener('click', () => {
     AudioEngine.playClick();
     navigator.clipboard.writeText(window.location.href);
