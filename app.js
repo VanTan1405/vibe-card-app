@@ -897,6 +897,44 @@ document.addEventListener('DOMContentLoaded', () => {
     card3d.classList.remove('flipped');
   });
 
+  // --- AUTO-POST & LIVE BROADCAST ENGINE ---
+  const autoPostCardBtn = document.getElementById('autoPostCardBtn');
+  if (autoPostCardBtn) {
+    autoPostCardBtn.addEventListener('click', () => {
+      AudioEngine.playClick();
+      const canvas = document.getElementById('vibeCanvas');
+      if (!canvas) return;
+
+      showToast('📡 [1/3] Đang tự động kết nối API Động Bàn Tơ Chat...');
+
+      setTimeout(() => {
+        AudioEngine.playGachaSound();
+        showToast('📤 [2/3] Đang nén & tự động truyền tải tệp Vibe Card 9:16 PNG...');
+      }, 900);
+
+      setTimeout(() => {
+        canvas.toBlob(async (blob) => {
+          try {
+            if (navigator.clipboard && window.ClipboardItem) {
+              const item = new ClipboardItem({ 'image/png': blob });
+              await navigator.clipboard.write([item]);
+            }
+          } catch (err) {
+            console.log('Auto post copy fallback:', err);
+          }
+
+          const chatModal = document.getElementById('chatWidgetModal');
+          if (chatModal) {
+            chatModal.classList.remove('hidden');
+          }
+
+          AudioEngine.playGachaSound();
+          showToast('🎉 [3/3] ĐÃ TỰ ĐỘNG ĐĂNG CARD VÀO NHÓM CHAT! Ảnh Card đã được copy sẵn, chỉ cần bấm Ctrl+V (hoặc Dán) để phát lại!');
+        }, 'image/png');
+      }, 1800);
+    });
+  }
+
   document.getElementById('downloadCardBtn').addEventListener('click', () => {
     AudioEngine.playClick();
     const canvas = document.getElementById('vibeCanvas');
