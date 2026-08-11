@@ -17,18 +17,18 @@
   <meta name="apple-mobile-web-app-title" content="VibeCardAI">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/8636/8636046.png">
 
-  <!-- Google Fonts: Plus Jakarta Sans & Outfit & Space Grotesk -->
+  <!-- Google Fonts: Be Vietnam Pro, Plus Jakarta Sans, Outfit & Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="theme-dark">
-  <!-- Dynamic Background Particles & Orbs -->
+<body class="theme-obsidian">
+  <!-- Dynamic Background Particles & Orbs with Ambient Waves -->
   <div class="bg-gradient-orb orb-1"></div>
   <div class="bg-gradient-orb orb-2"></div>
   <div class="bg-gradient-orb orb-3"></div>
@@ -48,15 +48,21 @@
       </div>
 
       <div class="header-actions">
+        <!-- 5 Vibe Theme Switcher Pill -->
+        <select id="vibeThemeSelect" class="vibe-theme-select" title="Đổi Vibe Giao Diện">
+          <option value="theme-obsidian">🌌 Vũ Trụ Obsidian (Cyber Neon)</option>
+          <option value="theme-matcha">🍵 Matcha Chill (Sage Zen)</option>
+          <option value="theme-sunset">🌅 Sunset Coquette (Cam Hổ Phách)</option>
+          <option value="theme-ocean">🌊 Ocean Cyan (Biển Xanh Cyber)</option>
+          <option value="theme-midnight">🌙 Midnight Luxury (Đen Hoàng Kim)</option>
+        </select>
+
         <button id="openWheelBtn" class="wheel-btn" title="Vòng Quay May Mắn">
           <i class="fa-solid fa-dharmachakra"></i> Quay May Mắn
         </button>
         <span id="usageCountBadge" class="usage-badge"><i class="fa-solid fa-eye"></i> Lượt xem: 3/3</span>
         <button id="soundToggleBtn" class="icon-btn" title="Bật/Tắt âm thanh">
           <i class="fa-solid fa-volume-high"></i>
-        </button>
-        <button id="themeToggleBtn" class="icon-btn" title="Đổi giao diện">
-          <i class="fa-solid fa-palette"></i>
         </button>
         <button id="openVipBtn" class="vip-badge-btn">
           <i class="fa-solid fa-crown"></i> Quẻ VIP 5K

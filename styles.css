@@ -3,11 +3,16 @@
    ========================================================================== */
 
 :root {
-  /* Color Palette - Deep Obsidian & Cyber Neon */
+  /* Font System - Synchronized Aesthetics */
+  --font-heading: 'Outfit', 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+
+  /* Default Theme 1: Obsidian Cyber Neon */
   --bg-primary: #0a0712;
   --bg-secondary: #130d24;
-  --bg-card: rgba(23, 15, 42, 0.7);
-  --bg-card-border: rgba(139, 92, 246, 0.25);
+  --bg-card: rgba(23, 15, 42, 0.75);
+  --bg-card-border: rgba(139, 92, 246, 0.3);
   
   --primary-purple: #8b5cf6;
   --primary-pink: #ec4899;
@@ -19,39 +24,72 @@
   --text-muted: #94a3b8;
   --text-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #3b82f6 100%);
 
-  --font-heading: 'Outfit', sans-serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
-  --font-mono: 'Space Grotesk', monospace;
-
-  --shadow-glow: 0 0 25px rgba(139, 92, 246, 0.35);
-  --shadow-glow-pink: 0 0 25px rgba(236, 72, 153, 0.35);
+  --shadow-glow: 0 0 30px rgba(139, 92, 246, 0.35);
+  --shadow-glow-pink: 0 0 30px rgba(236, 72, 153, 0.35);
   --radius-lg: 24px;
   --radius-md: 16px;
   --radius-sm: 10px;
 
-  --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Theme Variant 2: Cyber Neon */
-body.theme-cyber {
-  --bg-primary: #050b14;
-  --bg-secondary: #0a192f;
-  --bg-card: rgba(10, 25, 47, 0.75);
-  --bg-card-border: rgba(6, 182, 212, 0.3);
-  --primary-purple: #06b6d4;
-  --primary-pink: #10b981;
-  --text-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #10b981 100%);
+/* Theme 1: Obsidian Cyber Neon */
+body.theme-obsidian {
+  --bg-primary: #0a0712;
+  --bg-secondary: #130d24;
+  --bg-card: rgba(23, 15, 42, 0.75);
+  --bg-card-border: rgba(139, 92, 246, 0.3);
+  --primary-purple: #8b5cf6;
+  --primary-pink: #ec4899;
+  --text-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #3b82f6 100%);
 }
 
-/* Theme Variant 3: Y2K Pastel */
-body.theme-pastel {
-  --bg-primary: #180a1c;
-  --bg-secondary: #2b1033;
-  --bg-card: rgba(43, 16, 51, 0.75);
-  --bg-card-border: rgba(244, 114, 182, 0.3);
+/* Theme 2: Matcha Chill & Zen */
+body.theme-matcha {
+  --bg-primary: #061410;
+  --bg-secondary: #0c241d;
+  --bg-card: rgba(14, 38, 30, 0.75);
+  --bg-card-border: rgba(16, 185, 129, 0.3);
+  --primary-purple: #10b981;
+  --primary-pink: #34d399;
+  --primary-amber: #f59e0b;
+  --text-gradient: linear-gradient(135deg, #10b981 0%, #34d399 50%, #06b6d4 100%);
+}
+
+/* Theme 3: Sunset Coquette */
+body.theme-sunset {
+  --bg-primary: #1c0a14;
+  --bg-secondary: #2e1022;
+  --bg-card: rgba(46, 16, 34, 0.75);
+  --bg-card-border: rgba(244, 114, 182, 0.35);
   --primary-purple: #f472b6;
   --primary-pink: #fb7185;
+  --primary-amber: #f59e0b;
   --text-gradient: linear-gradient(135deg, #f472b6 0%, #fb7185 50%, #f59e0b 100%);
+}
+
+/* Theme 4: Oceanic Cyber Wave */
+body.theme-ocean {
+  --bg-primary: #040e1a;
+  --bg-secondary: #081b33;
+  --bg-card: rgba(10, 31, 58, 0.75);
+  --bg-card-border: rgba(6, 182, 212, 0.35);
+  --primary-purple: #06b6d4;
+  --primary-pink: #3b82f6;
+  --primary-amber: #38bdf8;
+  --text-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #6366f1 100%);
+}
+
+/* Theme 5: Midnight Gold & Luxury */
+body.theme-midnight {
+  --bg-primary: #0d0a04;
+  --bg-secondary: #1a1508;
+  --bg-card: rgba(28, 22, 10, 0.8);
+  --bg-card-border: rgba(245, 158, 11, 0.35);
+  --primary-purple: #f59e0b;
+  --primary-pink: #fbbf24;
+  --primary-amber: #d97706;
+  --text-gradient: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #f472b6 100%);
 }
 
 /* Reset & Global Base */
@@ -205,19 +243,26 @@ body {
   align-items: center;
   gap: 10px;
 }
-.icon-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.vibe-theme-select {
+  background: rgba(139, 92, 246, 0.15);
   color: var(--text-main);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  outline: none;
   cursor: pointer;
   transition: var(--transition-smooth);
 }
-.icon-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.08);
+.vibe-theme-select:hover {
+  background: rgba(139, 92, 246, 0.25);
+  border-color: rgba(139, 92, 246, 0.6);
+}
+.vibe-theme-select option {
+  background: #130d24;
+  color: #fff;
 }
 .vip-badge-btn {
   background: linear-gradient(135deg, #f59e0b, #d97706);

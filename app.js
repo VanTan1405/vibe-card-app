@@ -675,20 +675,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Sound & Theme Toggle
+  // Sound & 5-Theme Switcher
   document.getElementById('soundToggleBtn').addEventListener('click', () => {
     state.isSoundOn = !state.isSoundOn;
     document.getElementById('soundToggleBtn').innerHTML = state.isSoundOn ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
     showToast(state.isSoundOn ? 'Đã bật âm thanh' : 'Đã tắt âm thanh');
   });
 
-  document.getElementById('themeToggleBtn').addEventListener('click', () => {
-    AudioEngine.playClick();
-    document.body.classList.remove(state.themes[state.currentThemeIndex]);
-    state.currentThemeIndex = (state.currentThemeIndex + 1) % state.themes.length;
-    document.body.classList.add(state.themes[state.currentThemeIndex]);
-    showToast('Đã đổi theme giao diện!');
-  });
+  const vibeThemeSelect = document.getElementById('vibeThemeSelect');
+  if (vibeThemeSelect) {
+    vibeThemeSelect.addEventListener('change', (e) => {
+      AudioEngine.playClick();
+      document.body.className = e.target.value;
+      showToast('✨ Đã chuyển Vibe giao diện!');
+    });
+  }
 
   // Native Web Share API 1-Click
   const nativeShareBtn = document.getElementById('nativeShareBtn');
