@@ -1114,6 +1114,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const aiChatInput = document.getElementById('aiChatInput');
   const aiChatMessages = document.getElementById('aiChatMessages');
 
+  // --- SUPERCHARGED AI FORTUNE & ASTRO ENGINE ---
+  const AI_IMAGES = {
+    love: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&q=80',
+    career: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500&q=80',
+    wealth: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80',
+    tarot: 'https://images.unsplash.com/photo-1514533450685-4493e01d1fdc?w=500&q=80',
+    health: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500&q=80',
+    general: 'https://images.unsplash.com/photo-1507499739999-097706ad8914?w=500&q=80'
+  };
+
   if (aiChatBtn && aiChatModal) {
     aiChatBtn.addEventListener('click', () => {
       AudioEngine.playClick();
@@ -1123,38 +1133,83 @@ document.addEventListener('DOMContentLoaded', () => {
       aiChatModal.classList.add('hidden');
     });
 
-    sendAiChatBtn.addEventListener('click', handleAiChatSend);
+    sendAiChatBtn.addEventListener('click', () => handleAiChatSend());
     aiChatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') handleAiChatSend();
     });
+
+    // Handle Quick Chip Clicks
+    document.querySelectorAll('.ai-chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const query = btn.dataset.query;
+        if (query) handleAiChatSend(query);
+      });
+    });
   }
 
-  function handleAiChatSend() {
-    const query = aiChatInput.value.trim();
+  function handleAiChatSend(customQuery = null) {
+    const query = customQuery || aiChatInput.value.trim();
     if (!query) return;
 
     AudioEngine.playClick();
     appendChatMessage(query, 'user');
-    aiChatInput.value = '';
+    if (!customQuery) aiChatInput.value = '';
 
     const seed = hashString(query + getTodayString());
+    
     setTimeout(() => {
-      const responses = [
-        "🔮 Quẻ AI phán rằng: Năng lượng của bạn hôm nay cực kỳ bùng nổ! Cứ tự tin làm điều bạn muốn, vận may đang đứng về phía bạn đấy.",
-        "✨ Vũ trụ gửi thông điệp: Đừng ngần ngại bày tỏ tình cảm hoặc chốt deal trong hôm nay. Người ấy hoặc đối tác đang rất mở lòng với bạn!",
-        "💫 Chỉ số may mắn hôm nay của bạn là 98%! Hãy thưởng cho mình một ly trà sữa hoặc món đồ yêu thích để gia tăng tần số thu hút tài lộc nhé.",
-        "🚀 Công danh và tài chính sắp có bước phát triển lớn vào tuần tới. Tập trung kỷ luật và học hỏi kỹ năng mới ngay từ bây giờ!"
-      ];
-      const answer = responses[seed % responses.length];
-      appendChatMessage(answer, 'ai');
+      let topicKey = 'general';
+      let answerText = '';
+      const qLower = query.toLowerCase();
+
+      if (qLower.includes('crush') || qLower.includes('yêu') || qLower.includes('thương') || qLower.includes('duyên') || qLower.includes('tình')) {
+        topicKey = 'love';
+        const loveAnswers = [
+          "💖 **Quẻ Tình Duyên AI Phán:** Trái tim của crush hoặc người ấy đang dành cho bạn một sự quan tâm vô cùng đặc biệt! ✨ Chỉ số thấu hiểu hôm nay đạt **96%**. Hãy chủ động gửi 1 tin nhắn ngắn vào tầm chiều tối nhé! 💌",
+          "💘 **Thông Điệp Tình Yêu Vũ Trụ:** Bạn đang sở hữu tần số thu hút cực mạnh hôm nay! 🌟 Người ấy có vẻ đang ngập ngừng muốn ngỏ lời. Hãy bật bật đèn xanh để mọi thứ tiến triển ngọt ngào hơn! 🌹"
+        ];
+        answerText = loveAnswers[seed % loveAnswers.length];
+      } else if (qLower.includes('tài') || qLower.includes('tiền') || qLower.includes('giàu') || qLower.includes('lộc') || qLower.includes('bạc')) {
+        topicKey = 'wealth';
+        const wealthAnswers = [
+          "🚀 **Vận Tài Lộc Bùng Nổ:** Cát khí tài lộc đang đổ về túi bạn! 💰 Dự báo vào khoảng giữa tháng tới, bạn sẽ nhận được một khoản doanh thu hoặc tiền thưởng ngoài kỳ vọng. Cứ tự tin chốt đơn!",
+          "💎 **Thần Tài Đèn Xanh:** Chỉ số phát tài đạt **98%**! 🌟 Đây là cơ hội vàng để mở rộng đầu tư hoặc săn deal sản phẩm phong thủy nâng tầm uy tín cá nhân."
+        ];
+        answerText = wealthAnswers[seed % wealthAnswers.length];
+      } else if (qLower.includes('nghề') || qLower.includes('việc') || qLower.includes('thăng') || qLower.includes('sự nghiệp') || qLower.includes('công danh')) {
+        topicKey = 'career';
+        const careerAnswers = [
+          "💼 **Định Hướng Sự Nghiệp 2026:** Năng lượng Thần Số Học cho thấy bạn sở hữu tố chất **Lãnh Đạo & Sáng Tạo**. 🏆 Giai đoạn 2026 - 2028 sẽ là thời điểm vàng để bạn thăng tiến vị trí Quản lý!",
+          "🔥 **Bước Tiến Công Danh:** Quý nhân đang xuất hiện ở nơi làm việc! ✨ Hãy chủ động nhận các dự án quan trọng, sự kiên trì của bạn sẽ gặt hái thành quả rực rỡ."
+        ];
+        answerText = careerAnswers[seed % careerAnswers.length];
+      } else if (qLower.includes('tarot') || qLower.includes('bài') || qLower.includes('lá')) {
+        topicKey = 'tarot';
+        const tarotAnswers = [
+          "🎴 **Lá Bài Tarot 3D Hướng Dẫn:** Bạn rút được lá **The Sun (XIX) ☀️** & **The Empress (III) 👑**! Mọi đám mây suy tư đã được xua tan, tương lai rực rỡ và dồi dào tài lộc đang chờ đón bạn!",
+          "🔮 **Trải Bài Tarot Linh Ứng:** Lá bài **Wheel of Fortune 🎡** xuất hiện! Vòng quay may mắn đang dịch chuyển theo hướng có lợi 100% cho các quyết định cá nhân của bạn."
+        ];
+        answerText = tarotAnswers[seed % tarotAnswers.length];
+      } else {
+        topicKey = 'general';
+        const genAnswers = [
+          "🔮 **Quẻ Vibe Tổng Quan:** Tần số năng lượng hôm nay của bạn cực kỳ bùng nổ (100% Aura)! ✨ Hãy thả lỏng tâm trí, thưởng cho mình 1 ly trà sữa và tự tin tỏa sáng!",
+          "✨ **Thông Điệp Vũ Trụ Gen Z:** Mọi thử thách nhỏ hôm nay chỉ là đòn bẩy đưa bạn lên nấc thang mới. Hãy luôn giữ nụ cười và tinh thần tích cực nhé! 🌟"
+        ];
+        answerText = genAnswers[seed % genAnswers.length];
+      }
+
+      const imgUrl = AI_IMAGES[topicKey];
+      const fullContent = `${answerText}<br><img src="${imgUrl}" alt="Hình ảnh phong thủy AI" class="chat-img-bubble">`;
+      appendChatMessage(fullContent, 'ai');
       AudioEngine.playGachaSound();
     }, 800);
   }
 
-  function appendChatMessage(text, sender) {
+  function appendChatMessage(htmlContent, sender) {
     const div = document.createElement('div');
     div.className = `chat-msg ${sender}`;
-    div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+    div.innerHTML = `<div class="msg-bubble">${htmlContent}</div>`;
     aiChatMessages.appendChild(div);
     aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
   }
@@ -1200,22 +1255,6 @@ document.addEventListener('DOMContentLoaded', () => {
       star.style.animation = `pulseGlow ${Math.random() * 3 + 2}s infinite alternate`;
       container.appendChild(star);
     }
-  }
-
-  // Zalo Chat Widget Event Listeners
-  const zaloChatBtn = document.getElementById('zaloChatBtn');
-  const zaloChatModal = document.getElementById('zaloChatModal');
-  const closeZaloChatModalBtn = document.getElementById('closeZaloChatModalBtn');
-
-  if (zaloChatBtn && zaloChatModal) {
-    zaloChatBtn.addEventListener('click', () => {
-      AudioEngine.playClick();
-      zaloChatModal.classList.toggle('hidden');
-    });
-
-    closeZaloChatModalBtn.addEventListener('click', () => {
-      zaloChatModal.classList.add('hidden');
-    });
   }
 
   createStars();
