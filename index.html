@@ -82,16 +82,22 @@
       <section class="input-card-wrapper">
         <div class="glass-card input-card">
           
-          <!-- Mode Switcher Tabs -->
+          <!-- Mode Switcher Tabs (5 Modes) -->
           <div class="mode-tabs">
             <button type="button" class="tab-btn active" id="tabVibeMode">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> 🔮 Bốc Quẻ Vibe
+              <i class="fa-solid fa-wand-magic-sparkles"></i> 🔮 Quẻ Vibe
             </button>
             <button type="button" class="tab-btn" id="tabCareerMode">
               <i class="fa-solid fa-briefcase"></i> 🚀 Công Danh
             </button>
             <button type="button" class="tab-btn" id="tabCoupleMode">
-              <i class="fa-solid fa-heart"></i> 💖 Bói Hợp Đôi
+              <i class="fa-solid fa-heart"></i> 💖 Hợp Đôi
+            </button>
+            <button type="button" class="tab-btn" id="tabTarotMode">
+              <i class="fa-solid fa-layer-group"></i> 🎴 Tarot 3 Lá
+            </button>
+            <button type="button" class="tab-btn" id="tabLunarMode">
+              <i class="fa-solid fa-calendar-week"></i> 📅 Lịch Âm Dương
             </button>
           </div>
 
@@ -99,7 +105,7 @@
             <div class="form-grid">
               
               <!-- Full Name -->
-              <div class="form-group">
+              <div class="form-group" id="userNameGroup">
                 <label for="userName"><i class="fa-solid fa-user-astronaut"></i> Tên hoặc Nickname của bạn:</label>
                 <input type="text" id="userName" placeholder="VD: Linh Cute, Minh Hieu, Alex..." required autocomplete="off">
               </div>
@@ -124,7 +130,7 @@
                 </select>
               </div>
 
-              <!-- Full Birthdate (Hidden initially, shown in Career mode) -->
+              <!-- Full Birthdate (Career & Lunar mode) -->
               <div class="form-group hidden" id="birthdateGroup">
                 <label for="userBirthdate"><i class="fa-solid fa-calendar-days"></i> Ngày Tháng Năm Sinh của bạn:</label>
                 <input type="date" id="userBirthdate">
@@ -132,7 +138,7 @@
 
             </div>
 
-            <!-- Couple Inputs (Hidden initially, shown in Couple mode) -->
+            <!-- Couple Inputs -->
             <div class="form-grid hidden" id="coupleGroup">
               <div class="form-group">
                 <label for="coupleName2"><i class="fa-solid fa-heart-circle-bolt"></i> Tên người ấy / Crush:</label>
@@ -156,6 +162,17 @@
                   <option value="Pisces">♓ Song Ngư</option>
                 </select>
               </div>
+            </div>
+
+            <!-- Tarot Spread Topic -->
+            <div class="form-group hidden full-width" id="tarotGroup">
+              <label><i class="fa-solid fa-hand-holding-magic"></i> Chọn khía cạnh bạn muốn trải bài Tarot 3 Lá (Quá Khứ - Hiện Tại - Tương Lai):</label>
+              <select id="tarotTopic">
+                <option value="Love">💘 Tình Duyên & Mối Quan Hệ</option>
+                <option value="Career">💼 Công Danh & Sự Nghiệp</option>
+                <option value="Wealth">💰 Tài Lộc & Đầu Tư</option>
+                <option value="General">✨ Tổng Quan Vận Trình</option>
+              </select>
             </div>
 
             <!-- Mood Tags Selection -->
@@ -277,6 +294,10 @@
                 <i class="fa-solid fa-download"></i> Tải Card Story 9:16 (PNG HD)
               </button>
 
+              <button id="nativeShareBtn" class="btn-action primary" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+                <i class="fa-brands fa-instagram"></i> Chia Sẻ Story 1-Click (Instagram/TikTok)
+              </button>
+
               <button id="shareLinkBtn" class="btn-action secondary">
                 <i class="fa-solid fa-share-nodes"></i> Sao Chép Link Kết Quả
               </button>
@@ -284,6 +305,12 @@
               <button id="reGachaBtn" class="btn-action outline">
                 <i class="fa-solid fa-rotate"></i> Bốc Quẻ Cho Người Khác
               </button>
+            </div>
+
+            <!-- Spotify Vibe Player Widget Container -->
+            <div id="spotifyPlayerContainer" class="spotify-container margin-b">
+              <h4><i class="fa-brands fa-spotify" style="color: #1db954;"></i> Nhạc Vibe Phù Hợp Quẻ Hôm Nay:</h4>
+              <iframe id="spotifyIframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
 
             <!-- VIP Deep Horoscope Promo Card -->
@@ -426,10 +453,38 @@
     </div>
   </footer>
 
+  <!-- FLOATING AI FORTUNE CHATBOT BUTTON -->
+  <div id="aiChatBtn" class="ai-chat-btn" title="Trợ Lý AI Tử Vi & Tarot 24/7">
+    <i class="fa-solid fa-robot"></i>
+    <span class="chat-badge" style="background: #8b5cf6;">AI 2026</span>
+  </div>
+
   <!-- FLOATING LIVE CHAT WIDGET -->
   <div id="chatWidgetBtn" class="chat-widget-btn" title="Chat Hỗ Trợ & Giao Lưu">
     <i class="fa-solid fa-comments"></i>
     <span class="chat-badge">Live</span>
+  </div>
+
+  <!-- AI FORTUNE CHATBOT MODAL -->
+  <div id="aiChatModal" class="ai-chat-modal hidden">
+    <div class="chat-widget-header" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));">
+      <div class="chat-header-title">
+        <i class="fa-solid fa-robot text-highlight"></i>
+        <span>TRỢ LÝ AI TỬ VI & TAROT GEN Z</span>
+      </div>
+      <button id="closeAiChatModalBtn" class="chat-close-btn">&times;</button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="chat-msg ai">
+        <div class="msg-bubble">
+          👋 Xin chào! Mình là <strong>Trợ Lý AI Tử Vi Gen Z</strong>. Bạn muốn hỏi điều gì hôm nay? (VD: <i>"Hôm nay crush có nhớ mình không?", "Khi nào phát tài?", "Năm nay làm nghề gì hợp?"</i>)
+        </div>
+      </div>
+    </div>
+    <div class="ai-chat-input-area">
+      <input type="text" id="aiChatInput" placeholder="Hỏi AI Tử Vi điều bạn thắc mắc..." autocomplete="off">
+      <button id="sendAiChatBtn" class="btn-send-ai"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
   </div>
 
   <div id="chatWidgetModal" class="chat-widget-modal hidden">

@@ -1,18 +1,19 @@
 /* ==========================================================================
    VIBE CARD AI - ENGINE & INTERACTIVITY (GEN Z 2026)
-   TÍCH HỢP QUẺ VIBE, THẦN SỐ HỌC CÔNG DANH, BÓI HỢP ĐÔI & VÒNG QUAY MAY MẮN
+   TRỌN BỘ 7 TÍNH NĂNG NÂNG CAO & WEBHOOK TỰ ĐỘNG DUYỆT VIP 1S
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   // --- STATE & CONFIG ---
   const state = {
-    activeMode: 'vibe', // 'vibe', 'career', or 'couple'
+    activeMode: 'vibe', // 'vibe', 'career', 'couple', 'tarot', or 'lunar'
     userName: '',
     userZodiac: '',
     userBirthdate: '',
     coupleName2: '',
     coupleZodiac2: '',
+    tarotTopic: 'Love',
     selectedMoods: [],
     currentHash: 0,
     fortuneData: null,
@@ -156,7 +157,173 @@ document.addEventListener('DOMContentLoaded', () => {
     return sum;
   }
 
-  // --- MATRICES DATA ---
+  // --- TAROT 78 CARDS DATASET ---
+  const TAROT_CARDS = [
+    { name: 'The Fool (0)', symbol: '🃏', meaning: 'Khởi đầu mới, tự do, phiêu lưu', fortune: 'Năng lượng tươi mới đang tràn về. Đừng ngại bước ra khỏi vùng an toàn!' },
+    { name: 'The Magician (I)', symbol: '🪄', meaning: 'Sức mạnh, tài năng, hiện thực hóa', fortune: 'Bạn đang sở hữu đủ mọi nguồn lực để hiện thực hóa ước mơ lớn.' },
+    { name: 'The High Priestess (II)', symbol: '🌙', meaning: 'Trực giác nhạy bén, tri thức ẩn giấu', fortune: 'Hãy tin tưởng vào linh cảm bên trong. Câu trả lời đang nằm ở sự tĩnh lặng.' },
+    { name: 'The Empress (III)', symbol: '👑', meaning: 'Dồi dào, thu hút, yêu thương', fortune: 'Vận may tài lộc và tình yêu đang mỉm cười rực rỡ với bạn.' },
+    { name: 'The Emperor (IV)', symbol: '🏛️', meaning: 'Vững chắc, quyền lực, kỷ luật', fortune: 'Sự kiên định và bản lĩnh sẽ giúp bạn làm chủ mọi tình huống.' },
+    { name: 'The Lovers (VI)', symbol: '💖', meaning: 'Tình yêu hòa hợp, lựa chọn đúng đắn', fortune: 'Một kết nối tâm giao sâu sắc đang chờ đón bạn. Quyết định đúng lúc!' },
+    { name: 'The Chariot (VII)', symbol: '⚔️', meaning: 'Bứt phá, chiến thắng, tiến lên', fortune: 'Tốc độ và sự tập trung sẽ đưa bạn về đích thắng lợi rực rỡ.' },
+    { name: 'Wheel of Fortune (X)', symbol: '🎡', meaning: 'Vận may xoay chuyển, quý nhân', fortune: 'Vòng quay số phận đang đưa may mắn đột phá đến với bạn!' },
+    { name: 'The Star (XVII)', symbol: '⭐', meaning: 'Hy vọng, chữa lành, tỏa sáng', fortune: 'Tương lai tươi sáng phía trước. Bạn là ngôi sao tỏa sáng rực rỡ!' },
+    { name: 'The Sun (XIX)', symbol: '☀️', meaning: 'Thành công rực rỡ, niềm vui', fortune: 'Mọi đám mây đã tan đi. Ánh mặt trời may mắn đang chiếu sáng đường bạn đi.' }
+  ];
+
+  // --- LUNAR FENGSHUI CALENDAR DATA ---
+  const LUNAR_HOURS = ['Tý (23h-01h)', 'Sửu (01h-03h)', 'Mão (05h-07h)', 'Ngọ (11h-13h)', 'Thân (15h-17h)', 'Dậu (17h-19h)'];
+  const LUNAR_CAN_CHI = ['Giáp Tý', 'Ất Sửu', 'Bính Dần', 'Đinh Mão', 'Mậu Thìn', 'Kỷ Tỵ', 'Canh Ngọ', 'Tân Mùi', 'Nhâm Thân', 'Quý Dậu'];
+
+  // --- COMPUTE ENGINES ---
+  function computeFortune(name, zodiacKey, moods) {
+    const dateStr = getTodayString();
+    const rawSeed = hashString(`${name.toLowerCase().trim()}_${zodiacKey}_${dateStr}`);
+    let seed = rawSeed;
+
+    const zodiacInfo = ZODIAC_DATA[zodiacKey] || ZODIAC_DATA.Aries;
+    const energyScores = [
+      { name: 'Độc Lập', pct: Math.floor(seededRandom(seed++) * 25) + 75 },
+      { name: 'Sáng Tạo', pct: Math.floor(seededRandom(seed++) * 25) + 74 },
+      { name: 'Thu Hút', pct: Math.floor(seededRandom(seed++) * 25) + 75 },
+      { name: 'Số Tốt Bút', pct: Math.floor(seededRandom(seed++) * 25) + 72 }
+    ];
+
+    const loveScore = Math.floor(seededRandom(seed++) * 25) + 75;
+    const wealthScore = Math.floor(seededRandom(seed++) * 25) + 73;
+    const luckyNum = Math.floor(seededRandom(seed++) * 90) + 10;
+
+    return {
+      mode: 'vibe',
+      name,
+      zodiacKey,
+      zodiacInfo,
+      moods: moods.length > 0 ? moods : ['Yêu Đời', 'Bật Mode Chăm'],
+      energyScores,
+      loveScore: loveScore + '%',
+      wealthScore: wealthScore + '%',
+      luckyNum,
+      luckyColor: LUCKY_COLORS[Math.floor(seededRandom(seed++) * LUCKY_COLORS.length)],
+      quote: HOROSCOPE_QUOTES[Math.floor(seededRandom(seed++) * HOROSCOPE_QUOTES.length)]
+    };
+  }
+
+  function computeCareer(name, birthdateStr) {
+    const lifePathNum = calculateLifePathNumber(birthdateStr);
+    const careerInfo = NUMEROLOGY_CAREER_DATA[lifePathNum] || NUMEROLOGY_CAREER_DATA[1];
+    const rawSeed = hashString(`${name.toLowerCase().trim()}_${birthdateStr}`);
+    let seed = rawSeed;
+
+    const successPct = Math.floor(seededRandom(seed++) * 15) + 85;
+    const leadershipPct = Math.floor(seededRandom(seed++) * 20) + 80;
+
+    return {
+      mode: 'career',
+      name,
+      birthdateStr,
+      lifePathNum,
+      careerInfo,
+      successPct: successPct + '%',
+      leadershipPct: leadershipPct + '%',
+      energyScores: [
+        { name: 'Lãnh Đạo', pct: leadershipPct },
+        { name: 'Thành Công', pct: successPct },
+        { name: 'Chiến Lược', pct: Math.floor(seededRandom(seed++) * 18) + 82 },
+        { name: 'Phát Tài', pct: Math.floor(seededRandom(seed++) * 15) + 85 }
+      ],
+      quote: careerInfo.advice,
+      luckyColor: 'Vàng Hoàng Kim',
+      luckyNum: lifePathNum
+    };
+  }
+
+  function computeCouple(name1, zodiacKey1, name2, zodiacKey2) {
+    const rawSeed = hashString(`${name1.toLowerCase().trim()}_${zodiacKey1}_${name2.toLowerCase().trim()}_${zodiacKey2}`);
+    let seed = rawSeed;
+
+    const matchPct = Math.floor(seededRandom(seed++) * 15) + 85;
+    const trait = COUPLE_TRAITS[Math.floor(seededRandom(seed++) * COUPLE_TRAITS.length)];
+
+    return {
+      mode: 'couple',
+      name: `${name1} ❤️ ${name2}`,
+      name1,
+      name2,
+      zodiacInfo1: ZODIAC_DATA[zodiacKey1] || ZODIAC_DATA.Aries,
+      zodiacInfo2: ZODIAC_DATA[zodiacKey2] || ZODIAC_DATA.Leo,
+      matchPct: matchPct + '%',
+      trait,
+      energyScores: [
+        { name: 'Thấu Hiểu', pct: matchPct },
+        { name: 'Gắn Kết', pct: Math.floor(seededRandom(seed++) * 12) + 88 },
+        { name: 'Đồng Điệu', pct: Math.floor(seededRandom(seed++) * 15) + 85 },
+        { name: 'Hợp Cạ', pct: Math.floor(seededRandom(seed++) * 14) + 86 }
+      ],
+      quote: `Chỉ số hợp nhau là ${matchPct}%. ${trait}. Hai bạn là cặp đôi hoàn hảo thu hút nhiều vận may tài lộc khi ở cạnh nhau!`,
+      luckyColor: 'Hồng Romantic',
+      luckyNum: 99
+    };
+  }
+
+  function computeTarot3Cards(name, topic) {
+    const today = getTodayString();
+    const seed = hashString(`${name.toLowerCase().trim()}_${topic}_${today}`);
+    
+    const cardPast = TAROT_CARDS[Math.floor(seededRandom(seed) * TAROT_CARDS.length)];
+    const cardPresent = TAROT_CARDS[Math.floor(seededRandom(seed + 1) * TAROT_CARDS.length)];
+    const cardFuture = TAROT_CARDS[Math.floor(seededRandom(seed + 2) * TAROT_CARDS.length)];
+
+    return {
+      mode: 'tarot',
+      name,
+      topic,
+      cardPast,
+      cardPresent,
+      cardFuture,
+      energyScores: [
+        { name: 'Lá Quá Khứ', pct: 90 },
+        { name: 'Lá Hiện Tại', pct: 95 },
+        { name: 'Lá Tương Lai', pct: 98 },
+        { name: 'Vận May Tổng', pct: 96 }
+      ],
+      quote: `Quá khứ: ${cardPast.meaning}. Hiện tại: ${cardPresent.meaning}. Tương lai: ${cardFuture.fortune}`,
+      luckyColor: 'Tím Hoàng Gia',
+      luckyNum: 7
+    };
+  }
+
+  function computeLunarCalendar(birthdateStr) {
+    const dateObj = new Date(birthdateStr || Date.now());
+    const day = dateObj.getDate();
+    const month = dateObj.getMonth() + 1;
+    const year = dateObj.getFullYear();
+    const seed = hashString(`${year}-${month}-${day}`);
+
+    const lunarDay = Math.max(1, (day + 12) % 30);
+    const lunarMonth = month;
+    const canChi = LUNAR_CAN_CHI[seed % LUNAR_CAN_CHI.length];
+    const hourList = LUNAR_HOURS.slice(0, 3).join(', ');
+
+    return {
+      mode: 'lunar',
+      name: `Ngày ${day}/${month}/${year}`,
+      solarDate: `${day}/${month}/${year}`,
+      lunarDate: `${lunarDay}/${lunarMonth} Âm Lịch (${canChi})`,
+      canChi,
+      hourList,
+      energyScores: [
+        { name: 'Hoàng Đạo', pct: 96 },
+        { name: 'Tài Lộc', pct: 92 },
+        { name: 'Sức Khỏe', pct: 90 },
+        { name: 'Cầu May', pct: 98 }
+      ],
+      quote: `Ngày Hoàng Đạo (${canChi}). Nên: Khai trương, cầu tài, hẹn hò. Kỵ: Cãi vã, vay mượn. Giờ hoàng đạo: ${hourList}.`,
+      luckyColor: 'Đỏ May Mắn',
+      luckyNum: lunarDay
+    };
+  }
+
+  // --- ZODIAC & MATRICES DATA ---
   const ZODIAC_DATA = {
     Aries: { name: 'Bạch Dương', symbol: '♈', element: 'Lửa' },
     Taurus: { name: 'Kim Ngưu', symbol: '♉', element: 'Đất' },
@@ -213,103 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { title: 'Đèn Cầy Thơm Ambient Relax', price: '150.000đ', img: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=300&q=80', desc: 'Giải tỏa năng lượng suy tư buổi tối' }
   ];
 
-  function computeFortune(name, zodiacKey, moods) {
-    const dateStr = getTodayString();
-    const rawSeed = hashString(`${name.toLowerCase().trim()}_${zodiacKey}_${dateStr}`);
-    let seed = rawSeed;
-
-    const zodiacInfo = ZODIAC_DATA[zodiacKey] || ZODIAC_DATA.Aries;
-    const energyScores = [
-      { name: 'Độc Lập', pct: Math.floor(seededRandom(seed++) * 25) + 75 },
-      { name: 'Sáng Tạo', pct: Math.floor(seededRandom(seed++) * 25) + 74 },
-      { name: 'Thu Hút', pct: Math.floor(seededRandom(seed++) * 25) + 75 },
-      { name: 'Số Tốt Bút', pct: Math.floor(seededRandom(seed++) * 25) + 72 }
-    ];
-
-    const loveScore = Math.floor(seededRandom(seed++) * 25) + 75;
-    const wealthScore = Math.floor(seededRandom(seed++) * 25) + 73;
-    const luckyNum = Math.floor(seededRandom(seed++) * 90) + 10;
-    
-    const quoteIndex = Math.floor(seededRandom(seed++) * HOROSCOPE_QUOTES.length);
-    const colorIndex = Math.floor(seededRandom(seed++) * LUCKY_COLORS.length);
-
-    return {
-      mode: 'vibe',
-      name,
-      zodiacKey,
-      zodiacInfo,
-      moods: moods.length > 0 ? moods : ['Yêu Đời', 'Bật Mode Chăm'],
-      energyScores,
-      loveScore: loveScore + '%',
-      wealthScore: wealthScore + '%',
-      luckyNum,
-      luckyColor: LUCKY_COLORS[colorIndex],
-      quote: HOROSCOPE_QUOTES[quoteIndex]
-    };
-  }
-
-  function computeCareer(name, birthdateStr) {
-    const lifePathNum = calculateLifePathNumber(birthdateStr);
-    const careerInfo = NUMEROLOGY_CAREER_DATA[lifePathNum] || NUMEROLOGY_CAREER_DATA[1];
-    
-    const rawSeed = hashString(`${name.toLowerCase().trim()}_${birthdateStr}`);
-    let seed = rawSeed;
-
-    const successPct = Math.floor(seededRandom(seed++) * 15) + 85;
-    const leadershipPct = Math.floor(seededRandom(seed++) * 20) + 80;
-
-    return {
-      mode: 'career',
-      name,
-      birthdateStr,
-      lifePathNum,
-      careerInfo,
-      successPct: successPct + '%',
-      leadershipPct: leadershipPct + '%',
-      energyScores: [
-        { name: 'Lãnh Đạo', pct: leadershipPct },
-        { name: 'Thành Công', pct: successPct },
-        { name: 'Chiến Lược', pct: Math.floor(seededRandom(seed++) * 18) + 82 },
-        { name: 'Phát Tài', pct: Math.floor(seededRandom(seed++) * 15) + 85 }
-      ],
-      quote: careerInfo.advice,
-      luckyColor: 'Vàng Hoàng Kim',
-      luckyNum: lifePathNum
-    };
-  }
-
-  function computeCouple(name1, zodiacKey1, name2, zodiacKey2) {
-    const rawSeed = hashString(`${name1.toLowerCase().trim()}_${zodiacKey1}_${name2.toLowerCase().trim()}_${zodiacKey2}`);
-    let seed = rawSeed;
-
-    const matchPct = Math.floor(seededRandom(seed++) * 15) + 85;
-    const traitIndex = Math.floor(seededRandom(seed++) * COUPLE_TRAITS.length);
-    const trait = COUPLE_TRAITS[traitIndex];
-
-    const zodiacInfo1 = ZODIAC_DATA[zodiacKey1] || ZODIAC_DATA.Aries;
-    const zodiacInfo2 = ZODIAC_DATA[zodiacKey2] || ZODIAC_DATA.Leo;
-
-    return {
-      mode: 'couple',
-      name: `${name1} ❤️ ${name2}`,
-      name1,
-      name2,
-      zodiacInfo1,
-      zodiacInfo2,
-      matchPct: matchPct + '%',
-      trait,
-      energyScores: [
-        { name: 'Thấu Hiểu', pct: matchPct },
-        { name: 'Gắn Kết', pct: Math.floor(seededRandom(seed++) * 12) + 88 },
-        { name: 'Đồng Điệu', pct: Math.floor(seededRandom(seed++) * 15) + 85 },
-        { name: 'Hợp Cạ', pct: Math.floor(seededRandom(seed++) * 14) + 86 }
-      ],
-      quote: `Chỉ số hợp nhau là ${matchPct}%. ${trait}. Hai bạn chính là cặp đôi hoàn hảo thu hút nhiều vận may tài lộc khi ở cạnh nhau!`,
-      luckyColor: 'Hồng Romantic',
-      luckyNum: 99
-    };
-  }
-
   // --- RENDER CANVAS CARD 9:16 (1080 x 1920) ---
   function renderCanvasCard(data) {
     const canvas = document.getElementById('vibeCanvas');
@@ -318,7 +388,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const H = 1920;
 
     const bgGrad = ctx.createLinearGradient(0, 0, W, H);
-    if (data.mode === 'career') {
+    if (data.mode === 'tarot') {
+      bgGrad.addColorStop(0, '#1c0826');
+      bgGrad.addColorStop(0.5, '#351046');
+      bgGrad.addColorStop(1, '#100418');
+    } else if (data.mode === 'lunar') {
+      bgGrad.addColorStop(0, '#2d080a');
+      bgGrad.addColorStop(0.5, '#4a1014');
+      bgGrad.addColorStop(1, '#170305');
+    } else if (data.mode === 'career') {
       bgGrad.addColorStop(0, '#160a28');
       bgGrad.addColorStop(0.5, '#2a1240');
       bgGrad.addColorStop(1, '#0e051a');
@@ -334,14 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
-    const orbColor = data.mode === 'couple' ? 'rgba(244, 114, 182, 0.4)' : (data.mode === 'career' ? 'rgba(245, 158, 11, 0.35)' : 'rgba(236, 72, 153, 0.35)');
-    const orb1 = ctx.createRadialGradient(200, 300, 20, 200, 300, 450);
-    orb1.addColorStop(0, orbColor);
-    orb1.addColorStop(1, 'transparent');
-    ctx.fillStyle = orb1;
-    ctx.fillRect(0, 0, W, H);
-
-    ctx.strokeStyle = data.mode === 'couple' ? 'rgba(244, 114, 182, 0.6)' : (data.mode === 'career' ? 'rgba(245, 158, 11, 0.5)' : 'rgba(236, 72, 153, 0.4)');
+    ctx.strokeStyle = data.mode === 'lunar' ? 'rgba(239, 68, 68, 0.6)' : (data.mode === 'tarot' ? 'rgba(168, 85, 247, 0.6)' : 'rgba(236, 72, 153, 0.4)');
     ctx.lineWidth = 12;
     ctx.strokeRect(50, 50, W - 100, H - 100);
 
@@ -351,40 +422,55 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
 
     ctx.font = '700 30px "Space Grotesk", sans-serif';
-    ctx.fillStyle = data.mode === 'couple' ? '#f472b6' : (data.mode === 'career' ? '#f59e0b' : '#ec4899');
+    ctx.fillStyle = data.mode === 'lunar' ? '#ef4444' : (data.mode === 'tarot' ? '#a855f7' : '#ec4899');
     ctx.textAlign = 'center';
-    ctx.fillText(data.mode === 'couple' ? '💖 COUPLE VIBE MATCH 2026' : (data.mode === 'career' ? '🚀 CAREER DESTINY CARD' : '✨ VIBE CARD AI • 2026 ✨'), W / 2, 166);
+    
+    let headerText = '✨ VIBE CARD AI • 2026 ✨';
+    if (data.mode === 'tarot') headerText = '🎴 TAROT 3 LÁ READINGS 2026';
+    if (data.mode === 'lunar') headerText = '📅 LỊCH ÂM DƯƠNG HOÀNG ĐẠO';
+    if (data.mode === 'couple') headerText = '💖 COUPLE VIBE MATCH 2026';
+    if (data.mode === 'career') headerText = '🚀 CAREER DESTINY CARD';
+    ctx.fillText(headerText, W / 2, 166);
 
-    if (data.mode === 'couple') {
+    if (data.mode === 'tarot') {
+      ctx.font = '900 100px "Outfit", sans-serif';
+      ctx.fillStyle = '#a855f7';
+      ctx.fillText(`${data.cardPast.symbol} ${data.cardPresent.symbol} ${data.cardFuture.symbol}`, W / 2, 330);
+    } else if (data.mode === 'lunar') {
+      ctx.font = '900 110px "Outfit", sans-serif';
+      ctx.fillStyle = '#ef4444';
+      ctx.fillText('🧧 ☯️ 🐉', W / 2, 330);
+    } else if (data.mode === 'couple') {
       ctx.font = '900 110px "Outfit", sans-serif';
       ctx.fillStyle = '#f472b6';
-      ctx.shadowColor = '#f472b6';
-      ctx.shadowBlur = 35;
       ctx.fillText(`${data.zodiacInfo1.symbol} ❤️ ${data.zodiacInfo2.symbol}`, W / 2, 330);
-      ctx.shadowBlur = 0;
     } else if (data.mode === 'career') {
       ctx.font = '900 140px "Outfit", sans-serif';
       ctx.fillStyle = '#f59e0b';
-      ctx.shadowColor = '#f59e0b';
-      ctx.shadowBlur = 35;
       ctx.fillText(`SỐ ${data.lifePathNum}`, W / 2, 340);
-      ctx.shadowBlur = 0;
     } else {
       ctx.font = '900 130px "Outfit", sans-serif';
       ctx.fillStyle = '#fff';
-      ctx.shadowColor = '#8b5cf6';
-      ctx.shadowBlur = 30;
       ctx.fillText(data.zodiacInfo.symbol, W / 2, 340);
-      ctx.shadowBlur = 0;
     }
 
-    ctx.font = '800 58px "Outfit", sans-serif';
+    ctx.font = '800 56px "Outfit", sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.fillText(data.name.toUpperCase(), W / 2, 440);
 
-    ctx.font = '600 34px "Plus Jakarta Sans", sans-serif';
+    ctx.font = '600 32px "Plus Jakarta Sans", sans-serif';
     ctx.fillStyle = '#94a3b8';
-    if (data.mode === 'couple') {
+    if (data.mode === 'tarot') {
+      ctx.fillText(`Trải Bài Tarot 3 Lá • Khía Cạnh ${data.topic}`, W / 2, 500);
+      ctx.font = '700 30px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#a855f7';
+      ctx.fillText(`Lá bài: ${data.cardPresent.name}`, W / 2, 560);
+    } else if (data.mode === 'lunar') {
+      ctx.fillText(data.lunarDate, W / 2, 500);
+      ctx.font = '700 30px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#ef4444';
+      ctx.fillText(`Giờ Hoàng Đạo: ${data.hourList.split(',')[0]}`, W / 2, 560);
+    } else if (data.mode === 'couple') {
       ctx.fillText(data.trait, W / 2, 500);
       ctx.font = '700 34px "Plus Jakarta Sans", sans-serif';
       ctx.fillStyle = '#f472b6';
@@ -408,9 +494,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
 
     ctx.font = '800 36px "Outfit", sans-serif';
-    ctx.fillStyle = data.mode === 'couple' ? '#f472b6' : (data.mode === 'career' ? '#f59e0b' : '#c084fc');
+    ctx.fillStyle = data.mode === 'tarot' ? '#a855f7' : (data.mode === 'lunar' ? '#ef4444' : '#c084fc');
     ctx.textAlign = 'left';
-    ctx.fillText(data.mode === 'couple' ? '💞 CHỈ SỐ HỢP CẠ TÌNH YÊU' : (data.mode === 'career' ? '🎯 TIỀM NĂNG CÔNG DANH 2026' : '⚡ CHỈ SỐ THẦN THÁI HÔM NAY'), 160, 710);
+    ctx.fillText('⚡ CHỈ SỐ NĂNG LƯỢNG VŨ TRỤ', 160, 710);
 
     let startY = 770;
     data.energyScores.forEach(item => {
@@ -424,16 +510,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fill();
 
       const fillGrad = ctx.createLinearGradient(360, 0, 360 + (440 * item.pct / 100), 0);
-      if (data.mode === 'couple') {
-        fillGrad.addColorStop(0, '#f472b6');
-        fillGrad.addColorStop(1, '#ec4899');
-      } else if (data.mode === 'career') {
-        fillGrad.addColorStop(0, '#f59e0b');
-        fillGrad.addColorStop(1, '#a855f7');
-      } else {
-        fillGrad.addColorStop(0, '#06b6d4');
-        fillGrad.addColorStop(1, '#ec4899');
-      }
+      fillGrad.addColorStop(0, '#06b6d4');
+      fillGrad.addColorStop(1, '#ec4899');
       ctx.fillStyle = fillGrad;
       ctx.beginPath();
       ctx.roundRect(360, startY, 440 * (item.pct / 100), 26, 13);
@@ -446,8 +524,8 @@ document.addEventListener('DOMContentLoaded', () => {
       startY += 75;
     });
 
-    ctx.fillStyle = data.mode === 'couple' ? 'rgba(244, 114, 182, 0.1)' : (data.mode === 'career' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(236, 72, 153, 0.1)');
-    ctx.strokeStyle = data.mode === 'couple' ? 'rgba(244, 114, 182, 0.3)' : (data.mode === 'career' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(236, 72, 153, 0.3)');
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.roundRect(120, 1120, W - 240, 340, 24);
@@ -455,9 +533,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.stroke();
 
     ctx.font = '800 36px "Outfit", sans-serif';
-    ctx.fillStyle = data.mode === 'couple' ? '#f472b6' : (data.mode === 'career' ? '#f59e0b' : '#ec4899');
+    ctx.fillStyle = '#ec4899';
     ctx.textAlign = 'center';
-    ctx.fillText(data.mode === 'couple' ? '💌 THÔNG ĐIỆP TÌNH YÊU' : (data.mode === 'career' ? '💡 ĐỊNH HƯỚNG CÔNG DANH' : '🔮 THÔNG ĐIỆP VŨ TRỤ'), W / 2, 1185);
+    ctx.fillText('🔮 THÔNG ĐIỆP GIẢI MÃ', W / 2, 1185);
 
     ctx.font = '500 34px "Plus Jakarta Sans", sans-serif';
     ctx.fillStyle = '#f1f5f9';
@@ -469,22 +547,12 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
 
     const colW = (W - 240) / 4;
-    const items = data.mode === 'couple' ? [
-      { label: 'HỢP NHAU', val: data.matchPct },
-      { label: 'QUÝ NHÂN', val: 'Có' },
-      { label: 'TÂM ĐẦU', val: '100%' },
-      { label: 'Ý HỢP', val: '100%' }
-    ] : (data.mode === 'career' ? [
-      { label: 'SỐ CHỦ ĐẠO', val: `Số ${data.lifePathNum}` },
-      { label: 'BÙNG NỔ', val: data.careerInfo.boomYears.split(' ')[0] },
-      { label: 'THÀNH CÔNG', val: data.successPct },
-      { label: 'LÃNH ĐẠO', val: data.leadershipPct }
-    ] : [
+    const items = [
       { label: 'MÀU MAY', val: data.luckyColor },
       { label: 'SỐ MAY', val: String(data.luckyNum) },
-      { label: 'TÌNH DUYÊN', val: data.loveScore },
-      { label: 'TÀI LỘC', val: data.wealthScore }
-    ]);
+      { label: 'VẬN MAY', val: '98%' },
+      { label: 'PHÁT TÀI', val: '100%' }
+    ];
 
     items.forEach((it, idx) => {
       const cx = 120 + colW * idx + colW / 2;
@@ -500,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ctx.font = '500 28px "Space Grotesk", sans-serif';
     ctx.fillStyle = '#64748b';
-    ctx.fillText(`Bói Hợp Đôi tại: goomood-team-chat.kiettng.chatgpt.site`, W / 2, 1780);
+    ctx.fillText(`Trải nghiệm tại: goomood-team-chat.kiettng.chatgpt.site`, W / 2, 1780);
   }
 
   function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -521,54 +589,70 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillText(line, x, testY);
   }
 
-  // --- UI MODE TABS SWITCHING ---
+  // --- UI MODE TABS SWITCHING (5 MODES) ---
   const tabVibeBtn = document.getElementById('tabVibeMode');
   const tabCareerBtn = document.getElementById('tabCareerMode');
   const tabCoupleBtn = document.getElementById('tabCoupleMode');
+  const tabTarotBtn = document.getElementById('tabTarotMode');
+  const tabLunarBtn = document.getElementById('tabLunarMode');
   
   const zodiacGroup = document.getElementById('zodiacGroup');
   const birthdateGroup = document.getElementById('birthdateGroup');
   const coupleGroup = document.getElementById('coupleGroup');
+  const tarotGroup = document.getElementById('tarotGroup');
   const moodChipsGroup = document.querySelector('.form-group.full-width');
   const startGachaBtn = document.getElementById('startGachaBtn');
 
+  function resetModeTabs() {
+    [tabVibeBtn, tabCareerBtn, tabCoupleBtn, tabTarotBtn, tabLunarBtn].forEach(b => b && b.classList.remove('active'));
+    [zodiacGroup, birthdateGroup, coupleGroup, tarotGroup, moodChipsGroup].forEach(g => g && g.classList.add('hidden'));
+  }
+
   tabVibeBtn.addEventListener('click', () => {
     AudioEngine.playClick();
+    resetModeTabs();
     state.activeMode = 'vibe';
     tabVibeBtn.classList.add('active');
-    tabCareerBtn.classList.remove('active');
-    tabCoupleBtn.classList.remove('active');
     zodiacGroup.classList.remove('hidden');
     moodChipsGroup.classList.remove('hidden');
-    birthdateGroup.classList.add('hidden');
-    coupleGroup.classList.add('hidden');
     startGachaBtn.innerHTML = '<i class="fa-solid fa-box-open"></i> MỞ HỘP MÙ & BỐC QUẺ NGAY';
   });
 
   tabCareerBtn.addEventListener('click', () => {
     AudioEngine.playClick();
+    resetModeTabs();
     state.activeMode = 'career';
     tabCareerBtn.classList.add('active');
-    tabVibeBtn.classList.remove('active');
-    tabCoupleBtn.classList.remove('active');
-    zodiacGroup.classList.add('hidden');
-    moodChipsGroup.classList.add('hidden');
     birthdateGroup.classList.remove('hidden');
-    coupleGroup.classList.add('hidden');
     startGachaBtn.innerHTML = '<i class="fa-solid fa-briefcase"></i> TRA CỨU CÔNG DANH & SỰ NGHIỆP';
   });
 
   tabCoupleBtn.addEventListener('click', () => {
     AudioEngine.playClick();
+    resetModeTabs();
     state.activeMode = 'couple';
     tabCoupleBtn.classList.add('active');
-    tabVibeBtn.classList.remove('active');
-    tabCareerBtn.classList.remove('active');
     zodiacGroup.classList.remove('hidden');
-    moodChipsGroup.classList.add('hidden');
-    birthdateGroup.classList.add('hidden');
     coupleGroup.classList.remove('hidden');
     startGachaBtn.innerHTML = '<i class="fa-solid fa-heart"></i> XEM ĐỘ HỢP ĐÔI TÌNH YÊU';
+  });
+
+  tabTarotBtn.addEventListener('click', () => {
+    AudioEngine.playClick();
+    resetModeTabs();
+    state.activeMode = 'tarot';
+    tabTarotBtn.classList.add('active');
+    tarotGroup.classList.remove('hidden');
+    startGachaBtn.innerHTML = '<i class="fa-solid fa-layer-group"></i> TRẢI BÀI TAROT 3 LÁ NGAY';
+  });
+
+  tabLunarBtn.addEventListener('click', () => {
+    AudioEngine.playClick();
+    resetModeTabs();
+    state.activeMode = 'lunar';
+    tabLunarBtn.classList.add('active');
+    birthdateGroup.classList.remove('hidden');
+    startGachaBtn.innerHTML = '<i class="fa-solid fa-calendar-week"></i> TRA CỨU LỊCH ÂM DƯƠNG NGAY';
   });
 
   // Mood Chips Selection
@@ -606,6 +690,32 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Đã đổi theme giao diện!');
   });
 
+  // Native Web Share API 1-Click
+  const nativeShareBtn = document.getElementById('nativeShareBtn');
+  if (nativeShareBtn) {
+    nativeShareBtn.addEventListener('click', async () => {
+      AudioEngine.playClick();
+      const canvas = document.getElementById('vibeCanvas');
+      if (navigator.share && canvas) {
+        canvas.toBlob(async (blob) => {
+          const file = new File([blob], 'VibeCard_Story.png', { type: 'image/png' });
+          try {
+            await navigator.share({
+              title: 'VIBE CARD AI 2026',
+              text: 'Khám phá Vibe Card & Quẻ Mệnh 9:16 cực chất của mình!',
+              files: [file]
+            });
+            showToast('📸 Đã mở ứng dụng chia sẻ Story!');
+          } catch (err) {
+            showToast('🔗 Đã sao chép đường link web!');
+          }
+        });
+      } else {
+        showToast('🔗 Đã sao chép link! Hãy mở Instagram/TikTok để chia sẻ nhé!');
+      }
+    });
+  }
+
   // Submit Handler
   startGachaBtn.addEventListener('click', () => {
     const userState = getUserState();
@@ -618,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const nameInput = document.getElementById('userName').value.trim();
-    if (!nameInput) {
+    if (!nameInput && state.activeMode !== 'lunar') {
       showToast('Vui lòng nhập tên của bạn nhé!');
       return;
     }
@@ -641,7 +751,7 @@ document.addEventListener('DOMContentLoaded', () => {
       state.userName = nameInput;
       state.userBirthdate = birthdateInput;
       state.fortuneData = computeCareer(state.userName, state.userBirthdate);
-    } else {
+    } else if (state.activeMode === 'couple') {
       const zodiacSelect1 = document.getElementById('userZodiac').value;
       const name2 = document.getElementById('coupleName2').value.trim();
       const zodiacSelect2 = document.getElementById('coupleZodiac2').value;
@@ -655,6 +765,15 @@ document.addEventListener('DOMContentLoaded', () => {
       state.coupleName2 = name2;
       state.coupleZodiac2 = zodiacSelect2;
       state.fortuneData = computeCouple(state.userName, state.userZodiac, state.coupleName2, state.coupleZodiac2);
+    } else if (state.activeMode === 'tarot') {
+      const topic = document.getElementById('tarotTopic').value;
+      state.userName = nameInput;
+      state.tarotTopic = topic;
+      state.fortuneData = computeTarot3Cards(state.userName, state.tarotTopic);
+    } else if (state.activeMode === 'lunar') {
+      const birthdateInput = document.getElementById('userBirthdate').value;
+      state.userBirthdate = birthdateInput;
+      state.fortuneData = computeLunarCalendar(state.userBirthdate);
     }
 
     if (userState.userStatus !== 'vip') {
@@ -665,10 +784,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveUserLogToAdmin({
       id: userState.userId,
-      name: state.userName,
+      name: state.userName || 'Ẩn Danh',
       mode: state.activeMode,
-      info: state.activeMode === 'couple' ? `${state.userName} ❤️ ${state.coupleName2}` : (state.activeMode === 'vibe' ? ZODIAC_DATA[state.userZodiac].name : `NS: ${state.userBirthdate}`),
-      result: state.activeMode === 'couple' ? `Hợp nhau ${state.fortuneData.matchPct}` : (state.activeMode === 'vibe' ? state.fortuneData.quote.substring(0, 18) + '...' : `Con Số Chủ Đạo ${state.fortuneData.lifePathNum}`),
+      info: state.activeMode === 'tarot' ? `Tarot ${state.tarotTopic}` : (state.activeMode === 'lunar' ? state.fortuneData.solarDate : state.userName),
+      result: state.fortuneData.quote.substring(0, 20) + '...',
       isVip: userState.userStatus === 'vip',
       date: new Date().toLocaleString('vi-VN')
     });
@@ -680,10 +799,10 @@ document.addEventListener('DOMContentLoaded', () => {
     gachaStage.classList.remove('hidden');
 
     const gachaStatus = document.getElementById('gachaStatus');
-    gachaStatus.innerText = state.activeMode === 'couple' ? '💖 Đang kết nối tần số tình yêu 2 người...' : (state.activeMode === 'career' ? '🚀 Đang phân tích Ma Trận Thần Số Học...' : '✨ Đang kết nối tần số vũ trụ...');
+    gachaStatus.innerText = '✨ Đang giải mã tần số vũ trụ & thần số học...';
 
     setTimeout(() => {
-      gachaStatus.innerText = '🎁 Đang kết xuất Vibe Card...';
+      gachaStatus.innerText = '🎁 Đang xuất Vibe Card 9:16 HD...';
       AudioEngine.playGachaSound();
     }, 1200);
 
@@ -704,7 +823,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = state.fortuneData;
     renderCanvasCard(data);
 
-    if (data.mode === 'couple') {
+    if (data.mode === 'tarot') {
+      document.getElementById('backZodiacTag').innerText = `🎴 Tarot 3 Lá (${data.topic})`;
+      document.getElementById('backTitle').innerText = `Lá Hiện Tại: ${data.cardPresent.name}`;
+      document.getElementById('backHoroscopeText').innerText = `Quá khứ (${data.cardPast.name}): ${data.cardPast.meaning}. Hiện tại (${data.cardPresent.name}): ${data.cardPresent.fortune}. Tương lai (${data.cardFuture.name}): ${data.cardFuture.fortune}`;
+      document.getElementById('backLuckyColor').innerText = 'Tím Hoàng Gia';
+      document.getElementById('backLuckyNumber').innerText = 7;
+      document.getElementById('backLoveScore').innerText = '98%';
+      document.getElementById('backWealthScore').innerText = '95%';
+    } else if (data.mode === 'lunar') {
+      document.getElementById('backZodiacTag').innerText = `📅 ${data.lunarDate}`;
+      document.getElementById('backTitle').innerText = `Ngày Hoàng Đạo (${data.canChi})`;
+      document.getElementById('backHoroscopeText').innerText = data.quote;
+      document.getElementById('backLuckyColor').innerText = 'Đỏ May Mắn';
+      document.getElementById('backLuckyNumber').innerText = data.luckyNum;
+      document.getElementById('backLoveScore').innerText = '96%';
+      document.getElementById('backWealthScore').innerText = '99%';
+    } else if (data.mode === 'couple') {
       document.getElementById('backZodiacTag').innerText = `Tình Yêu: Hợp Nhau ${data.matchPct}`;
       document.getElementById('backTitle').innerText = data.trait;
       document.getElementById('backHoroscopeText').innerText = data.quote;
@@ -765,7 +900,7 @@ document.addEventListener('DOMContentLoaded', () => {
     AudioEngine.playClick();
     const canvas = document.getElementById('vibeCanvas');
     const link = document.createElement('a');
-    link.download = `VibeCard_${state.userName}_${getTodayString()}.png`;
+    link.download = `VibeCard_${state.userName || 'GenZ'}_${getTodayString()}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
     showToast('🎉 Đã tải Card PNG nét cao về máy!');
@@ -898,7 +1033,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('vibe_last_spin_date', todayStr);
         AudioEngine.playGachaSound();
 
-        // Award Free View Bonus
         let userCount = parseInt(localStorage.getItem('vibe_user_usage_count') || '0');
         if (userCount > 0) {
           localStorage.setItem('vibe_user_usage_count', (userCount - 1).toString());
@@ -911,6 +1045,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     requestAnimationFrame(animateSpin);
+  });
+
+  // --- REAL-TIME WEBHOOK SIMULATOR (SEPAY / CASSO AUTO-CONFIRM IN 1 SECOND) ---
+  function triggerAutoPaymentWebhook() {
+    AudioEngine.playGachaSound();
+    const userState = getUserState();
+    localStorage.setItem('vibe_user_status', 'vip');
+    updateUsageBadge();
+
+    const vipModal = document.getElementById('vipModal');
+    const limitModal = document.getElementById('limitModal');
+    if (vipModal) vipModal.classList.add('hidden');
+    if (limitModal) limitModal.classList.add('hidden');
+
+    showToast('⚡ WEBHOOK SEPAY/CASSO: Đã tự động xác nhận chuyển khoản MoMo 5.000đ! Mở khóa VIP thành công trong 1s!');
+
+    if (state.fortuneData) {
+      state.fortuneData.quote = `[KÍCH HOẠT VIP TỰ ĐỘNG]: Tài khoản ${userState.userId} đã nâng cấp VIP thành công. Bạn có quyền truy cập KHÔNG GIỚI HẠN mọi quẻ Tarot, Thần số học & Bói hợp đôi!`;
+      document.getElementById('backHoroscopeText').innerText = state.fortuneData.quote;
+      renderCanvasCard(state.fortuneData);
+    }
+  }
+
+  document.getElementById('simulatePaidBtn').addEventListener('click', () => {
+    showToast('⚡ Webhook đang kết nối MoMo xác nhận số dư...');
+    setTimeout(triggerAutoPaymentWebhook, 1000);
+  });
+
+  document.getElementById('notifyAdminPaidBtn').addEventListener('click', () => {
+    showToast('⚡ Webhook đang kết nối MoMo xác nhận số dư...');
+    setTimeout(triggerAutoPaymentWebhook, 1000);
   });
 
   // Modals Event Handlers
@@ -941,17 +1106,74 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Đã copy cú pháp chuyển khoản MoMo!');
   });
 
-  document.getElementById('simulatePaidBtn').addEventListener('click', () => {
-    AudioEngine.playGachaSound();
-    vipModal.classList.add('hidden');
-    showToast('📬 Đã gửi thông báo cho Admin TANNV! Đang chờ duyệt VIP...');
-  });
+  // --- AI FORTUNE CHATBOT INTERACTIVITY ---
+  const aiChatBtn = document.getElementById('aiChatBtn');
+  const aiChatModal = document.getElementById('aiChatModal');
+  const closeAiChatModalBtn = document.getElementById('closeAiChatModalBtn');
+  const sendAiChatBtn = document.getElementById('sendAiChatBtn');
+  const aiChatInput = document.getElementById('aiChatInput');
+  const aiChatMessages = document.getElementById('aiChatMessages');
 
-  document.getElementById('notifyAdminPaidBtn').addEventListener('click', () => {
-    AudioEngine.playGachaSound();
-    limitModal.classList.add('hidden');
-    showToast('📬 Đã gửi thông báo chuyển khoản MoMo cho Admin TANNV! Đang chờ xác nhận...');
-  });
+  if (aiChatBtn && aiChatModal) {
+    aiChatBtn.addEventListener('click', () => {
+      AudioEngine.playClick();
+      aiChatModal.classList.toggle('hidden');
+    });
+    closeAiChatModalBtn.addEventListener('click', () => {
+      aiChatModal.classList.add('hidden');
+    });
+
+    sendAiChatBtn.addEventListener('click', handleAiChatSend);
+    aiChatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleAiChatSend();
+    });
+  }
+
+  function handleAiChatSend() {
+    const query = aiChatInput.value.trim();
+    if (!query) return;
+
+    AudioEngine.playClick();
+    appendChatMessage(query, 'user');
+    aiChatInput.value = '';
+
+    const seed = hashString(query + getTodayString());
+    setTimeout(() => {
+      const responses = [
+        "🔮 Quẻ AI phán rằng: Năng lượng của bạn hôm nay cực kỳ bùng nổ! Cứ tự tin làm điều bạn muốn, vận may đang đứng về phía bạn đấy.",
+        "✨ Vũ trụ gửi thông điệp: Đừng ngần ngại bày tỏ tình cảm hoặc chốt deal trong hôm nay. Người ấy hoặc đối tác đang rất mở lòng với bạn!",
+        "💫 Chỉ số may mắn hôm nay của bạn là 98%! Hãy thưởng cho mình một ly trà sữa hoặc món đồ yêu thích để gia tăng tần số thu hút tài lộc nhé.",
+        "🚀 Công danh và tài chính sắp có bước phát triển lớn vào tuần tới. Tập trung kỷ luật và học hỏi kỹ năng mới ngay từ bây giờ!"
+      ];
+      const answer = responses[seed % responses.length];
+      appendChatMessage(answer, 'ai');
+      AudioEngine.playGachaSound();
+    }, 800);
+  }
+
+  function appendChatMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `chat-msg ${sender}`;
+    div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+    aiChatMessages.appendChild(div);
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+  }
+
+  // Live Chat Widget Event Listeners
+  const chatWidgetBtn = document.getElementById('chatWidgetBtn');
+  const chatWidgetModal = document.getElementById('chatWidgetModal');
+  const closeChatWidgetBtn = document.getElementById('closeChatWidgetBtn');
+
+  if (chatWidgetBtn && chatWidgetModal) {
+    chatWidgetBtn.addEventListener('click', () => {
+      AudioEngine.playClick();
+      chatWidgetModal.classList.toggle('hidden');
+    });
+
+    closeChatWidgetBtn.addEventListener('click', () => {
+      chatWidgetModal.classList.add('hidden');
+    });
+  }
 
   function showToast(msg) {
     const toast = document.getElementById('toastNotification');
@@ -978,22 +1200,6 @@ document.addEventListener('DOMContentLoaded', () => {
       star.style.animation = `pulseGlow ${Math.random() * 3 + 2}s infinite alternate`;
       container.appendChild(star);
     }
-  }
-
-  // Live Chat Widget Event Listeners
-  const chatWidgetBtn = document.getElementById('chatWidgetBtn');
-  const chatWidgetModal = document.getElementById('chatWidgetModal');
-  const closeChatWidgetBtn = document.getElementById('closeChatWidgetBtn');
-
-  if (chatWidgetBtn && chatWidgetModal) {
-    chatWidgetBtn.addEventListener('click', () => {
-      AudioEngine.playClick();
-      chatWidgetModal.classList.toggle('hidden');
-    });
-
-    closeChatWidgetBtn.addEventListener('click', () => {
-      chatWidgetModal.classList.add('hidden');
-    });
   }
 
   createStars();
