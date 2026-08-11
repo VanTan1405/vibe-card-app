@@ -911,18 +911,39 @@ document.addEventListener('DOMContentLoaded', () => {
   if (shareToTeamChatBtn) {
     shareToTeamChatBtn.addEventListener('click', () => {
       AudioEngine.playClick();
-      const data = state.fortuneData;
-      const userName = state.userName || 'Bạn';
-      const quote = data ? data.quote : 'Vibe năng lượng bùng nổ!';
-      const shareMsg = `✨ [VIBE CARD AI 2026 OF ${userName.toUpperCase()}]:\n"${quote}"\n👉 Mời cả nhà xem quẻ tại Động Bàn Tơ: https://goomood-team-chat.kiettng.chatgpt.site/`;
-      
-      navigator.clipboard.writeText(shareMsg);
-      
-      const chatModal = document.getElementById('chatWidgetModal');
-      if (chatModal) {
-        chatModal.classList.remove('hidden');
-      }
-      showToast('💬 Đã copy thông điệp Card và mở Động Bàn Tơ Chat! Dán (Paste) vào khung chat để chia sẻ ngay!');
+      const canvas = document.getElementById('vibeCanvas');
+      if (!canvas) return;
+
+      canvas.toBlob(async (blob) => {
+        let isImageCopied = false;
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            const item = new ClipboardItem({ 'image/png': blob });
+            await navigator.clipboard.write([item]);
+            isImageCopied = true;
+          }
+        } catch (err) {
+          console.log('Direct image clipboard copy fallback:', err);
+        }
+
+        if (!isImageCopied) {
+          const link = document.createElement('a');
+          link.download = `VibeCard_${state.userName || 'GenZ'}_Story.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        }
+
+        const chatModal = document.getElementById('chatWidgetModal');
+        if (chatModal) {
+          chatModal.classList.remove('hidden');
+        }
+
+        if (isImageCopied) {
+          showToast('🖼️ ĐÃ SAO CHÉP HÌNH ẢNH CARD PNG! Đã mở Động Bàn Tơ Chat, chỉ cần nhấn Ctrl+V (hoặc Dán) để gửi hình ảnh!');
+        } else {
+          showToast('🖼️ ĐÃ TẢI HÌNH ẢNH CARD PNG VỀ MÁY! Đã mở Động Bàn Tơ Chat, hãy chọn gửi tệp ảnh vừa tải nhé!');
+        }
+      }, 'image/png');
     });
   }
 
